@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.roomieturn.NewChore"
+            android:label="@string/title_activity_new_chore" >
+        </activity>
+        <activity
+            android:name="com.example.roomieturn.RecentTasks"
+            android:label="@string/title_activity_recent_tasks" >
+        </activity>
     </application>
 
 </manifest>

@@ -7,8 +7,14 @@
     <string name="title_activity_new_chore">NewChore</string>
     <string name="title_activity_recent_tasks">RecentTasks</string>
     <string name="login_string">Login</string>
-    <string name="create_home_string">Create Home</string>
-    <string name="join_home_string">Join Home</string>
+    <string name="register_string">Register</string>
+    <string name="forgot_password_string">Forgot Password</string>
+    <string name="password_string">Password</string>
+    <string name="email_string">E-mail</string>
+    <string name="welcome_string">Welcome!</string>
     <string name="hello_world">Hello World</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_password_reset">PasswordReset</string>
+    <string name="title_activity_change_password">ChangePassword</string>
 
 </resources>

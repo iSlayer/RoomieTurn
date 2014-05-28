@@ -30,6 +30,23 @@
             android:name="com.example.roomieturn.RecentTasks"
             android:label="@string/title_activity_recent_tasks" >
         </activity>
+        <activity
+            android:name="com.example.roomieturn.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.roomieturn.Register"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.example.roomieturn.PasswordReset"
+            android:label="@string/title_activity_password_reset" >
+        </activity>
+        <activity
+            android:name="com.example.roomieturn.ChangePassword"
+            android:label="@string/title_activity_change_password" >
+        </activity>
     </application>
 
 </manifest>

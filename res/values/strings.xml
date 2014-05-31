@@ -16,5 +16,6 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_password_reset">PasswordReset</string>
     <string name="title_activity_change_password">ChangePassword</string>
+    <string name="title_activity_house_menu">HouseMenu</string>
 
 </resources>

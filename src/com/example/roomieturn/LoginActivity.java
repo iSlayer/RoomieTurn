@@ -132,7 +132,7 @@ public class LoginActivity extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000);
+					urlc.setConnectTimeout(3000); //time in seconds currently 5 mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -241,6 +241,7 @@ public class LoginActivity extends Activity {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Menu;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +47,7 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		// Initialize layout buttons and text views
+		// Initialize button & TV interface
 		inputEmail = (EditText) findViewById(R.id.email);
 		inputPassword = (EditText) findViewById(R.id.pword);
 		btnRegister = (Button) findViewById(R.id.registerbtn);
@@ -102,7 +103,7 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Async Task to check whether internet connection is working.
+	 * NetCheck Task to check whether Internet connection is working.
 	 **/
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;
@@ -121,7 +122,7 @@ public class LoginActivity extends Activity {
 		protected Boolean doInBackground(String... args) {
 
 			/**
-			 * Gets current device state and checks for working internet
+			 * Gets current device state and checks for working Internet
 			 * connection by trying Google.
 			 **/
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -165,7 +166,7 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Async Task to get and send data to My Sql database through JSON response.
+	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
 	private class ProcessLogin extends AsyncTask {
 		private ProgressDialog pDialog;
@@ -242,5 +243,12 @@ public class LoginActivity extends Activity {
 
 	public void NetAsync(View view) {
 		new NetCheck().execute();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 }

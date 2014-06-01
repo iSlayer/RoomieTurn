@@ -1,119 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_marginBottom="@dimen/item_vert_margin"
+    android:layout_marginLeft="@dimen/item_horz_margin"
+    android:layout_marginRight="@dimen/item_horz_margin"
+    android:layout_marginTop="@dimen/item_vert_margin"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:text="Register to RoomieTurn"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="125dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/textView"
-        android:layout_toLeftOf="@+id/textView"
-        android:text="Email"
+        android:gravity="center"
+        android:text="@string/create_acct_string"
         android:textColor="#000000"
-        android:textSize="15dp" />
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="@string/email_string"
         android:inputType="textEmailAddress"
         android:textColor="#000000"
-        android:textSize="15dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_below="@+id/textView4"
-        android:text="Username"
-        android:textColor="#000000"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/uname"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/textView5"
-        android:hint="Username"
+        android:hint="@string/username_string"
         android:textColor="#000000"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/pword"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/uname"
-        android:layout_below="@+id/textView5"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password_string"
         android:inputType="textPassword"
         android:textColor="#000000"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:layout_alignRight="@+id/textView5"
-        android:layout_alignTop="@+id/pword"
-        android:text="Password"
-        android:textColor="#000000"
-        android:textSize="15dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/register"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/textView6"
-        android:layout_toLeftOf="@+id/bktologin"
-        android:background="@drawable/buttonshape_register"
-        android:shadowColor="#0A0FA8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="Register"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/register"
+            android:layout_width="0dip"
+            android:layout_height="40dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/buttonshape_register"
+            android:shadowColor="#0A0FA8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="@string/register_string"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/bktologin"
-        android:layout_width="175dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/pword"
-        android:background="@drawable/buttonshape_back2login"
-        android:shadowColor="#0A0FA8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="Cancel"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/bktologin"
+            android:layout_width="145dp"
+            android:layout_height="40dp"
+            android:background="@drawable/buttonshape_back2login"
+            android:shadowColor="#0A0FA8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="@string/cancel_string"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/register_error"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/register"
         android:textColor="#000000" />
 
-</RelativeLayout>
+</LinearLayout>

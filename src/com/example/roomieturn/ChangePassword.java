@@ -9,10 +9,13 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.roomieturn.library.DatabaseHandler;
 import com.example.roomieturn.library.UserFunctions;
 import org.json.JSONException;
@@ -28,6 +31,7 @@ public class ChangePassword extends Activity {
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	EditText newpass;
+	EditText confirmpass;
 	TextView alert;
 	Button changepass;
 	Button cancel;
@@ -40,25 +44,55 @@ public class ChangePassword extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
 
+		/**
+		 * Cancel button click event
+		 */
 		cancel = (Button) findViewById(R.id.btcancel);
 		cancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				Intent login = new Intent(getApplicationContext(),
+				Intent myIntent = new Intent(getApplicationContext(),
 						RecentTasks.class);
-				startActivity(login);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivity(myIntent);
 				finish();
 			}
 		});
 
+		// Set of password strings and alert
 		newpass = (EditText) findViewById(R.id.newpass);
+		confirmpass = (EditText) findViewById(R.id.confirmpass);
 		alert = (TextView) findViewById(R.id.alertpass);
+
+		/**
+		 * Change Password button
+		 */
 		changepass = (Button) findViewById(R.id.btchangepass);
 		changepass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				NetAsync(view);
+				if ((!newpass.getText().toString().equals(""))
+						&& newpass.getText().toString()
+								.equals(confirmpass.getText().toString())) {
+					NetAsync(view);
+					// TODO: Add functionality to go back to RecentTasks screen
+				} else if ((!newpass.getText().toString()
+						.equals(confirmpass.getText().toString()))) {
+					showToast("Inconsistent Passwords");
+				} else {
+					showToast("Password field empty");
+				}
 			}
 		});
+	}
+
+	/**
+	 * showToast displays short messages to users
+	 */
+	private void showToast(String msg) {
+		Toast toast = Toast.makeText(getApplicationContext(), msg,
+				Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 0);
+		toast.show();
 	}
 
 	private class NetCheck extends AsyncTask {

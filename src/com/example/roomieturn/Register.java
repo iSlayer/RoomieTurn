@@ -68,6 +68,7 @@ public class Register extends Activity {
 			public void onClick(View view) {
 				Intent myIntent = new Intent(view.getContext(),
 						LoginActivity.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 				finish();
 			}
@@ -228,6 +229,7 @@ public class Register extends Activity {
 						 * Close all views before launching Registered screen
 						 **/
 						registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						registered.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 						pDialog.dismiss();
 						startActivity(registered);
 						finish();

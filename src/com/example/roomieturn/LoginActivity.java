@@ -29,10 +29,10 @@ public class LoginActivity extends Activity {
 	// Initialize buttons and text views
 	private Button btnLogin;
 	private Button btnRegister;
-	private Button btnPassReset;
 	private EditText inputEmail;
 	private EditText inputPassword;
 	private TextView loginErrorMsg;
+	private TextView passres;
 
 	/**
 	 * Called when the activity is first created.
@@ -53,18 +53,24 @@ public class LoginActivity extends Activity {
 		inputPassword = (EditText) findViewById(R.id.pword);
 		btnRegister = (Button) findViewById(R.id.registerbtn);
 		btnLogin = (Button) findViewById(R.id.login);
-		btnPassReset = (Button) findViewById(R.id.passres);
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
+		passres = (TextView) findViewById(R.id.passres);
+
+		addTxtVwImg();
 
 		/**
-		 * Password reset button click event
+		 * Password reset text view click event
 		 */
-		btnPassReset.setOnClickListener(new View.OnClickListener() {
+		passres.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
 			public void onClick(View view) {
 				Intent myIntent = new Intent(view.getContext(),
 						PasswordReset.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 				finish();
+				
 			}
 		});
 
@@ -74,6 +80,7 @@ public class LoginActivity extends Activity {
 		btnRegister.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Intent myIntent = new Intent(view.getContext(), Register.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 				finish();
 			}
@@ -98,10 +105,25 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
-	
-	private void showToast (String msg){
-		Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP,0,0);
+
+	/**
+	 * 
+	 */
+	private void addTxtVwImg() {
+		// inputEmail n inputPassword
+//		inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.emailimg, 0,
+//				0, 0);
+//		inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passimg,
+//				0, 0, 0);
+	}
+
+	/**
+	 * showToast displays short messages to users
+	 */
+	private void showToast(String msg) {
+		Toast toast = Toast.makeText(getApplicationContext(), msg,
+				Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 0);
 		toast.show();
 	}
 
@@ -135,7 +157,8 @@ public class LoginActivity extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000); //time in seconds currently 5 mins
+					urlc.setConnectTimeout(3000); // time in seconds currently 5
+													// mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;

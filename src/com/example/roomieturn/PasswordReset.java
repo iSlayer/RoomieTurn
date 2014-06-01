@@ -37,6 +37,7 @@ public class PasswordReset extends Activity {
 			public void onClick(View view) {
 				Intent myIntent = new Intent(view.getContext(),
 						LoginActivity.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 				finish();
 			}
@@ -50,6 +51,7 @@ public class PasswordReset extends Activity {
 			@Override
 			public void onClick(View view) {
 				NetAsync(view);
+				//TODO: Add functionality to go back to login screen
 			}
 		});
 	}

@@ -16,14 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-
-        <!--
-        <activity
-            android:name="com.example.roomieturn.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        -->
+        android:theme="@style/Theme.Modifiedtoolbar" >
         <activity
             android:name="com.example.roomieturn.NewChore"
             android:label="@string/title_activity_new_chore" >
@@ -35,7 +28,8 @@
         <activity
             android:name="com.example.roomieturn.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,15 +38,18 @@
         </activity>
         <activity
             android:name="com.example.roomieturn.Register"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register" 
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.PasswordReset"
-            android:label="@string/title_activity_password_reset" >
+            android:label="@string/title_activity_password_reset" 
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.ChangePassword"
-            android:label="@string/title_activity_change_password" >
+            android:label="@string/title_activity_change_password" 
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.HouseMenu"

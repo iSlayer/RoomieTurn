@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,17 +87,19 @@ public class Register extends Activity {
 					if (inputUsername.getText().toString().length() > 4) {
 						NetAsync(view);
 					} else {
-						Toast.makeText(getApplicationContext(),
-								"Username should be minimum 5 characters",
-								Toast.LENGTH_SHORT).show();
+						showToast("Username should be minimum 5 characters");
 					}
 				} else {
-					Toast.makeText(getApplicationContext(),
-							"One or more fields are empty", Toast.LENGTH_SHORT)
-							.show();
+					showToast("One or more fields are empty");
 				}
 			}
 		});
+	}
+	
+	private void showToast (String msg){
+		Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP,0,0);
+		toast.show();
 	}
 
 	/**

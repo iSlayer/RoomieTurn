@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.Menu;
 import android.os.Bundle;
 import android.view.View;
@@ -88,18 +89,20 @@ public class LoginActivity extends Activity {
 						&& (!inputPassword.getText().toString().equals(""))) {
 					NetAsync(view);
 				} else if ((!inputEmail.getText().toString().equals(""))) {
-					Toast.makeText(getApplicationContext(),
-							"Password field empty", Toast.LENGTH_SHORT).show();
+					showToast("Password field empty");
 				} else if ((!inputPassword.getText().toString().equals(""))) {
-					Toast.makeText(getApplicationContext(),
-							"Email field empty", Toast.LENGTH_SHORT).show();
+					showToast("Email field empty");
 				} else {
-					Toast.makeText(getApplicationContext(),
-							"Email and Password field are empty",
-							Toast.LENGTH_SHORT).show();
+					showToast("Email and Password fields empty");
 				}
 			}
 		});
+	}
+	
+	private void showToast (String msg){
+		Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP,0,0);
+		toast.show();
 	}
 
 	/**

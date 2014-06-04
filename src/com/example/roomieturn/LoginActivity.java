@@ -62,7 +62,7 @@ public class LoginActivity extends Activity {
 		 * Password reset text view click event
 		 */
 		passres.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View view) {
 				Intent myIntent = new Intent(view.getContext(),
@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 				finish();
-				
+
 			}
 		});
 
@@ -110,11 +110,10 @@ public class LoginActivity extends Activity {
 	 * 
 	 */
 	private void addTxtVwImg() {
-		// inputEmail n inputPassword
-//		inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.emailimg, 0,
-//				0, 0);
-//		inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passimg,
-//				0, 0, 0);
+		inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mail_opt, 0,
+				0, 0);
+		inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock_opt,
+				0, 0, 0);
 	}
 
 	/**

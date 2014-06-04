@@ -2,45 +2,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginBottom="@dimen/item_vert_margin"
-    android:layout_marginLeft="@dimen/item_horz_margin"
-    android:layout_marginRight="@dimen/item_horz_margin"
-    android:layout_marginTop="@dimen/item_vert_margin"
+    android:background="@drawable/bg_3"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView_dud"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
         android:text="@string/roomie_turn_string"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="22sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/edittext_rounded"
+        android:ems="10"
         android:hint="@string/email_string"
+        android:inputType="textEmailAddress"
+        android:padding="10dip"
         android:textColor="#000000"
         android:textSize="15sp" />
-    <!-- android:drawableLeft="@drawable/emailimg" -->
 
     <EditText
         android:id="@+id/pword"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:background="@drawable/edittext_rounded"
         android:ems="10"
         android:hint="@string/password_string"
         android:inputType="textPassword"
+        android:padding="10dip"
         android:textColor="#000000"
         android:textSize="15sp" />
-    <!-- android:drawableLeft="@drawable/passimg" -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin" >
 
         <Button
             android:id="@+id/login"
@@ -48,10 +62,6 @@
             android:layout_height="40dp"
             android:layout_weight="0.5"
             android:background="@drawable/buttonshape_login"
-            android:shadowColor="#0A0FA8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
             android:text="@string/login_string"
             android:textColor="#FFFFFF"
             android:textSize="25sp" />
@@ -61,10 +71,6 @@
             android:layout_width="145dp"
             android:layout_height="40dp"
             android:background="@drawable/buttonshape_reg"
-            android:shadowColor="#0A0FA8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
             android:text="@string/register_string"
             android:textColor="#FFFFFF"
             android:textSize="25sp" />
@@ -73,18 +79,26 @@
     <TextView
         android:id="@+id/passres"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:clickable="true"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:clickable="true"
         android:text="@string/forgot_password_string"
         android:textColor="#000000"
-        android:textStyle="italic"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/loginErrorMsg"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
         android:textColor="#000000" />
 
 </LinearLayout>

@@ -20,9 +20,9 @@
     <string name="username_string">User Name</string>
     <string name="reset_string">Reset</string>
     <string name="confirm_string">Confirm</string>
-    <string name="reset_password_string">Reset your Password</string>
-    <string name="change_password_string">Change your Password</string>
-    <string name="enter_email_string">Enter your E-mail</string>
+    <string name="reset_password_string">Reset Password</string>
+    <string name="change_password_string">Change Password</string>
+    <string name="enter_email_string">Enter E-mail</string>
     <string name="roomie_turn_string">Roomie Turn</string>
 
 </resources>

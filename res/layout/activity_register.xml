@@ -2,25 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginBottom="@dimen/item_vert_margin"
-    android:layout_marginLeft="@dimen/item_horz_margin"
-    android:layout_marginRight="@dimen/item_horz_margin"
-    android:layout_marginTop="@dimen/item_vert_margin"
+    android:background="@drawable/bg_opt"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
         android:text="@string/create_acct_string"
         android:textColor="#000000"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/email"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/edittext_rounded"
+        android:padding="10dip"
         android:ems="10"
         android:hint="@string/email_string"
         android:inputType="textEmailAddress"
@@ -31,6 +39,12 @@
         android:id="@+id/uname"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:background="@drawable/edittext_rounded"
+        android:padding="10dip"
         android:hint="@string/username_string"
         android:textColor="#000000"
         android:textSize="15sp" />
@@ -39,6 +53,12 @@
         android:id="@+id/pword"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:background="@drawable/edittext_rounded"
+        android:padding="10dip"
         android:ems="10"
         android:hint="@string/password_string"
         android:inputType="textPassword"
@@ -47,7 +67,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin" >
 
         <Button
             android:id="@+id/register"
@@ -81,6 +105,10 @@
         android:id="@+id/register_error"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
         android:textColor="#000000" />
 
 </LinearLayout>

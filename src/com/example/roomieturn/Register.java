@@ -62,7 +62,7 @@ public class Register extends Activity {
 
 		/**
 		 * Button which Switches back to the login screen on clicked
-		 **/
+		 
 		Button login = (Button) findViewById(R.id.bktologin);
 		login.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -72,7 +72,8 @@ public class Register extends Activity {
 				startActivityForResult(myIntent, 0);
 				finish();
 			}
-		});
+		}); 
+		*/
 
 		/**
 		 * Register Button click event. A Toast is set to alert when the fields

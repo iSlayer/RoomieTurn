@@ -32,20 +32,21 @@ public class PasswordReset extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
-		Button login = (Button) findViewById(R.id.bktolog);
-		login.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						LoginActivity.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-				finish();
-			}
-		});
-
+		
+//		Button login = (Button) findViewById(R.id.bktolog);
 		email = (EditText) findViewById(R.id.forpas);
 		alert = (TextView) findViewById(R.id.alert);
 		resetpass = (Button) findViewById(R.id.respass);
+		
+//		login.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View view) {
+//				Intent myIntent = new Intent(view.getContext(),
+//						LoginActivity.class);
+//				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//				startActivityForResult(myIntent, 0);
+//				finish();
+//			}
+//		});
 
 		resetpass.setOnClickListener(new View.OnClickListener() {
 			@Override

@@ -29,7 +29,8 @@
             android:name="com.example.roomieturn.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" 
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:launchMode="singleInstance" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,17 +40,20 @@
         <activity
             android:name="com.example.roomieturn.Register"
             android:label="@string/title_activity_register" 
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:launchMode="singleInstance" >
         </activity>
         <activity
             android:name="com.example.roomieturn.PasswordReset"
             android:label="@string/title_activity_password_reset" 
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:launchMode="singleInstance" >
         </activity>
         <activity
             android:name="com.example.roomieturn.ChangePassword"
             android:label="@string/title_activity_change_password" 
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:launchMode="singleInstance" >
         </activity>
         <activity
             android:name="com.example.roomieturn.HouseMenu"

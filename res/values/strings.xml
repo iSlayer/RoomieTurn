@@ -24,5 +24,7 @@
     <string name="change_password_string">Change Password</string>
     <string name="enter_email_string">Enter E-mail</string>
     <string name="roomie_turn_string">Roomie Turn</string>
+    <string name="new_pass_string">New Password</string>
+    <string name="confirm_pass_string">Confirm Password</string>
 
 </resources>

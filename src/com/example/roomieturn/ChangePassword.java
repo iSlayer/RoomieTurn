@@ -34,7 +34,7 @@ public class ChangePassword extends Activity {
 	EditText confirmpass;
 	TextView alert;
 	Button changepass;
-	Button cancel;
+//	Button cancel;
 
 	/**
 	 * Called when the activity is first created.
@@ -44,19 +44,19 @@ public class ChangePassword extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
 
-		/**
-		 * Cancel button click event
-		 */
-		cancel = (Button) findViewById(R.id.btcancel);
-		cancel.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View arg0) {
-				Intent myIntent = new Intent(getApplicationContext(),
-						RecentTasks.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivity(myIntent);
-				finish();
-			}
-		});
+//		/**
+//		 * Cancel button click event
+//		 */
+//		cancel = (Button) findViewById(R.id.btcancel);
+//		cancel.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View arg0) {
+//				Intent myIntent = new Intent(getApplicationContext(),
+//						RecentTasks.class);
+//				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//				startActivity(myIntent);
+//				finish();
+//			}
+//		});
 
 		// Set of password strings and alert
 		newpass = (EditText) findViewById(R.id.newpass);

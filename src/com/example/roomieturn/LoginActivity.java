@@ -56,7 +56,8 @@ public class LoginActivity extends Activity {
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
 		passres = (TextView) findViewById(R.id.passres);
 
-		addTxtVwImg();
+		// addTxtVwImg(); // Adds the icons next to the EditText boxes for email
+		// and pass
 
 		/**
 		 * Password reset text view click event
@@ -109,12 +110,13 @@ public class LoginActivity extends Activity {
 	/**
 	 * 
 	 */
-	private void addTxtVwImg() {
-		inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mail_opt, 0,
-				0, 0);
-		inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock_opt,
-				0, 0, 0);
-	}
+	// private void addTxtVwImg() {
+	// inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mail_opt,
+	// 0,
+	// 0, 0);
+	// inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock_opt,
+	// 0, 0, 0);
+	// }
 
 	/**
 	 * showToast displays short messages to users

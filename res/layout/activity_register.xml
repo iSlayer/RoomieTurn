@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_3"
+    android:background="@drawable/greenbg"
     android:orientation="vertical" >
 
     <TextView
@@ -15,25 +15,9 @@
         android:layout_marginRight="@dimen/item_horz_margin"
         android:layout_marginTop="50dp"
         android:text="@string/create_acct_string"
-        android:textColor="#000000"
-        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
         android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="@dimen/item_vert_margin"
-        android:layout_marginLeft="@dimen/item_horz_margin"
-        android:layout_marginRight="@dimen/item_horz_margin"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/edittext_rounded"
-        android:ems="10"
-        android:hint="@string/email_string"
-        android:inputType="textEmailAddress"
-        android:padding="10dip"
-        android:textColor="#000000"
-        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/uname"
@@ -42,9 +26,29 @@
         android:layout_marginBottom="@dimen/item_vert_margin"
         android:layout_marginLeft="@dimen/item_horz_margin"
         android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/edittext_rounded"
+        android:ems="10"
+        android:hint="@string/username_string"
+        android:padding="10dip"
+        android:textColor="#000000"
+        android:textSize="15sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
         android:layout_marginTop="@dimen/item_vert_margin"
         android:background="@drawable/edittext_rounded"
-        android:hint="@string/username_string"
+        android:ems="10"
+        android:hint="@string/email_string"
+        android:inputType="textEmailAddress"
         android:padding="10dip"
         android:textColor="#000000"
         android:textSize="15sp" />

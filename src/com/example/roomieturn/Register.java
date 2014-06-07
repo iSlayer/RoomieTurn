@@ -105,7 +105,7 @@ public class Register extends Activity {
 	}
 
 	/**
-	 * Async Task to check whether internet connection is working
+	 * Async Task to check whether Internet connection is working
 	 **/
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;

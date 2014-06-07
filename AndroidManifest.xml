@@ -28,9 +28,9 @@
         <activity
             android:name="com.example.roomieturn.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:launchMode="singleInstance" >
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,25 +39,27 @@
         </activity>
         <activity
             android:name="com.example.roomieturn.Register"
-            android:label="@string/title_activity_register" 
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_register"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.PasswordReset"
-            android:label="@string/title_activity_password_reset" 
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_password_reset"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.ChangePassword"
-            android:label="@string/title_activity_change_password" 
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_change_password"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.roomieturn.HouseMenu"
-            android:label="@string/title_activity_house_menu" >
+            android:label="@string/title_activity_house_menu"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
     </application>
 

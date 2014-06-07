@@ -26,5 +26,10 @@
     <string name="roomie_turn_string">Roomie Turn</string>
     <string name="new_pass_string">New Password</string>
     <string name="confirm_pass_string">Confirm Password</string>
+    <string name="create_house_string">Create House</string>
+    <string name="house_name_string">House Name</string>
+    <string name="create_string">Create</string>
+    <string name="join_house_string">Join a Household</string>
+    <string name="usr_name_string">User Name</string>
 
 </resources>

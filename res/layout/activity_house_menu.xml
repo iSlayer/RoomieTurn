@@ -1,16 +1,63 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".HouseMenu" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/greenbg"
+    android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/textView_create_house"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="@string/create_house_string"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/editText_house_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/edittext_rounded"
+        android:ems="10"
+        android:hint="@string/house_name_string"
+        android:padding="10dip"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/button_create_house"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:background="@drawable/selector_login"
+        android:text="@string/create_string"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/textView_join_house"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:background="@drawable/selector_forgot_pass"
+        android:clickable="true"
+        android:text="@string/join_house_string"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="italic" />
+
+</LinearLayout>

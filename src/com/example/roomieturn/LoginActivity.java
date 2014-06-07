@@ -28,10 +28,10 @@ public class LoginActivity extends Activity {
 
 	// Initialize buttons and text views
 	private Button btnLogin;
-	private Button btnRegister;
 	private EditText inputEmail;
 	private EditText inputPassword;
 	private TextView loginErrorMsg;
+	private TextView btnRegister;
 	private TextView passres;
 
 	/**
@@ -51,7 +51,7 @@ public class LoginActivity extends Activity {
 		// Initialize button & TV interface
 		inputEmail = (EditText) findViewById(R.id.email);
 		inputPassword = (EditText) findViewById(R.id.pword);
-		btnRegister = (Button) findViewById(R.id.registerbtn);
+		btnRegister = (TextView) findViewById(R.id.registerbtn);
 		btnLogin = (Button) findViewById(R.id.login);
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
 		passres = (TextView) findViewById(R.id.passres);
@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 						PasswordReset.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
-				finish();
+//				finish();
 
 			}
 		});
@@ -83,7 +83,7 @@ public class LoginActivity extends Activity {
 				Intent myIntent = new Intent(view.getContext(), Register.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
-				finish();
+//				finish();
 			}
 		});
 
@@ -105,18 +105,23 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
+		
+		/**
+		 * TESTING TO SKIP TO OTHER ACTIVITIES
+		 */
+		Button btnTest = (Button) findViewById(R.id.btn_test);
+		btnTest.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				Intent myIntent = new Intent(view.getContext(),
+						HouseMenu.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivityForResult(myIntent, 0);
+				finish();
+			}
+		});
 	}
-
-	/**
-	 * 
-	 */
-	// private void addTxtVwImg() {
-	// inputEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mail_opt,
-	// 0,
-	// 0, 0);
-	// inputPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock_opt,
-	// 0, 0, 0);
-	// }
 
 	/**
 	 * showToast displays short messages to users

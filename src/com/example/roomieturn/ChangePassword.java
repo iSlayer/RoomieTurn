@@ -3,7 +3,6 @@ package com.example.roomieturn;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -33,10 +32,10 @@ public class ChangePassword extends Activity {
 	 */
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	private EditText newpass;
-	private EditText confirmpass;
-	private TextView alert;
-	private Button changepass;
+	EditText newpass;
+	EditText confirmpass;
+	TextView alert;
+	Button changepass;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class ChangePassword extends Activity {
 		toast.show();
 	}
 
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -96,6 +95,7 @@ public class ChangePassword extends Activity {
 			nDialog.show();
 		}
 
+		@Override
 		protected Boolean doInBackground(String... args) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -120,6 +120,7 @@ public class ChangePassword extends Activity {
 			return false;
 		}
 
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -129,15 +130,9 @@ public class ChangePassword extends Activity {
 				alert.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	private class ProcessRegister extends AsyncTask {
+	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String newpas, email;
 
@@ -145,10 +140,10 @@ public class ChangePassword extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-			HashMap user = new HashMap();
+			HashMap<String,String> user = new HashMap<String,String>();
 			user = db.getUserDetails();
 			newpas = newpass.getText().toString();
-			email = (String) user.get("email");
+			email = user.get("email");
 			pDialog = new ProgressDialog(ChangePassword.this);
 			pDialog.setTitle("Contacting Servers");
 			pDialog.setMessage("Getting Data ...");
@@ -157,6 +152,7 @@ public class ChangePassword extends Activity {
 			pDialog.show();
 		}
 
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.chgPass(newpas, email);
@@ -164,6 +160,7 @@ public class ChangePassword extends Activity {
 			return json;
 		}
 
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -187,12 +184,6 @@ public class ChangePassword extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 	}
 

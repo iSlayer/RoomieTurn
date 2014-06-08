@@ -27,9 +27,9 @@ public class PasswordReset extends Activity {
 
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	private EditText email;
-	private TextView alert;
-	private Button resetpass;
+	EditText email;
+	TextView alert;
+	Button resetpass;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,7 @@ public class PasswordReset extends Activity {
 		toast.show();
 	}
 
-	@SuppressWarnings("rawtypes")
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String,String,Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -85,7 +84,7 @@ public class PasswordReset extends Activity {
 			nDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected Boolean doInBackground(String... args) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -94,7 +93,7 @@ public class PasswordReset extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(300);
+					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -110,7 +109,7 @@ public class PasswordReset extends Activity {
 			return false;
 		}
 
-		@SuppressWarnings({ "unchecked", "unused" })
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -120,16 +119,9 @@ public class PasswordReset extends Activity {
 				alert.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private class ProcessRegister extends AsyncTask {
+	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String forgotpassword;
 
@@ -149,14 +141,14 @@ public class PasswordReset extends Activity {
 			pDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.forPass(forgotpassword);
 			return json;
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			/**
 			 * Checks if the Password Change Process is success
@@ -181,15 +173,8 @@ public class PasswordReset extends Activity {
 				e.printStackTrace();
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

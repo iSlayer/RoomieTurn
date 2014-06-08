@@ -27,9 +27,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
-				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
-				+ " TEXT," + KEY_CREATED_AT + " TEXT" + ")";
+				+ KEY_ID + " INTEGER PRIMARY KEY," 
+				+ KEY_EMAIL + " TEXT UNIQUE," 
+				+ KEY_USERNAME + " TEXT," 
+				+ KEY_UID + " TEXT," 
+				+ KEY_CREATED_AT + " TEXT" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
 
@@ -59,8 +61,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Getting user data from database
 	 * */
-	public HashMap getUserDetails() {
-		HashMap user = new HashMap();
+	public HashMap<String, String> getUserDetails() {
+		HashMap<String, String> user = new HashMap<String, String>();
 		String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);

@@ -38,12 +38,12 @@ public class Register extends Activity {
 	/**
 	 * Defining layout items.
 	 **/
-	private EditText inputUsername;
-	private EditText inputEmail;
-	private EditText inputPassword;
-	private EditText confirmPassword;
-	private Button btnRegister;
-	private TextView registerErrorMsg;
+	EditText inputUsername;
+	EditText inputEmail;
+	EditText inputPassword;
+	EditText confirmPassword;
+	Button btnRegister;
+	TextView registerErrorMsg;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,8 +100,7 @@ public class Register extends Activity {
 	/**
 	 * Async Task to check whether Internet connection is working
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String,String,Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -115,7 +114,6 @@ public class Register extends Activity {
 			nDialog.show();
 		}
 
-		@SuppressWarnings("unused")
 		protected Boolean doInBackground(String... args) {
 			/**
 			 * Gets current device state and checks for working Internet
@@ -144,7 +142,7 @@ public class Register extends Activity {
 			return false;
 		}
 
-		@SuppressWarnings({ "unused", "unchecked" })
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -154,16 +152,9 @@ public class Register extends Activity {
 				registerErrorMsg.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private class ProcessRegister extends AsyncTask {
+	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
 		/**
 		 * Defining Process dialog
 		 **/
@@ -173,6 +164,9 @@ public class Register extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			
+            inputUsername = (EditText) findViewById(R.id.uname);
+            inputPassword = (EditText) findViewById(R.id.pword);
 
 			// Get user input strings
 			uname = inputUsername.getText().toString();
@@ -188,14 +182,14 @@ public class Register extends Activity {
 			pDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.registerUser(email, uname, password);
 			return json;
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			/**
 			 * Checks for success message.
@@ -256,15 +250,8 @@ public class Register extends Activity {
 				e.printStackTrace();
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

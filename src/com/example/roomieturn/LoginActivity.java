@@ -26,12 +26,12 @@ import java.net.URL;
 public class LoginActivity extends Activity {
 
 	// Initialize buttons and text views
-	private Button btnLogin;
-	private EditText inputEmail;
-	private EditText inputPassword;
+	Button btnLogin;
+	EditText inputEmail;
+	EditText inputPassword;
 	private TextView loginErrorMsg;
-	private TextView btnRegister;
-	private TextView passres;
+	TextView btnRegister;
+	TextView passres;
 
 	/**
 	 * Called when the activity is first created.
@@ -133,8 +133,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String,String,Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -148,7 +147,7 @@ public class LoginActivity extends Activity {
 			nDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected Boolean doInBackground(String... args) {
 
 			/**
@@ -162,7 +161,7 @@ public class LoginActivity extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(300); // time in seconds currently 5
+					urlc.setConnectTimeout(3000); // time in seconds currently 5
 													// mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
@@ -179,7 +178,7 @@ public class LoginActivity extends Activity {
 			return false;
 		}
 
-		@SuppressWarnings({ "unused", "unchecked" })
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -189,19 +188,12 @@ public class LoginActivity extends Activity {
 				loginErrorMsg.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class ProcessLogin extends AsyncTask {
+	private class ProcessLogin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String email, password;
 
@@ -210,6 +202,8 @@ public class LoginActivity extends Activity {
 			super.onPreExecute();
 			
 			// Get user input data
+            inputEmail = (EditText) findViewById(R.id.email);
+            inputPassword = (EditText) findViewById(R.id.pword);
 			email = inputEmail.getText().toString();
 			password = inputPassword.getText().toString();
 			
@@ -222,14 +216,14 @@ public class LoginActivity extends Activity {
 			pDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.loginUser(email, password);
 			return json;
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -272,15 +266,8 @@ public class LoginActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

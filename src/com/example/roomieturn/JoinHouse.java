@@ -31,9 +31,9 @@ public class JoinHouse extends Activity {
 	/**
 	 * Initialize GUI interface
 	 */
-	private EditText houseCode;
-	private EditText housePass;
-	private Button btnJoin;
+	EditText houseCode;
+	EditText housePass;
+	Button btnJoin;
 	private TextView loginErrorMsg;
 
 	/**
@@ -90,8 +90,7 @@ public class JoinHouse extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String,String,Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -105,7 +104,7 @@ public class JoinHouse extends Activity {
 			nDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected Boolean doInBackground(String... args) {
 
 			/**
@@ -119,7 +118,7 @@ public class JoinHouse extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(300); // timeout 5 mins
+					urlc.setConnectTimeout(3000); // timeout 5 mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -135,7 +134,7 @@ public class JoinHouse extends Activity {
 			return false;
 		}
 
-		@SuppressWarnings({ "unchecked", "unused" })
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -145,19 +144,12 @@ public class JoinHouse extends Activity {
 				loginErrorMsg.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class ProcessJoin extends AsyncTask {
+	private class ProcessJoin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String house, password;
 
@@ -178,14 +170,14 @@ public class JoinHouse extends Activity {
 			pDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.joinHouse(house, password);
 			return json;
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -228,15 +220,8 @@ public class JoinHouse extends Activity {
 				e.printStackTrace();
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

@@ -32,11 +32,11 @@ public class HouseMenu extends Activity {
 	/**
 	 * Initialize GUI interface
 	 */
-	private Button btnCreate;
-	private EditText houseName;
-	private EditText newPass;
-	private EditText confirmPass;
-	private TextView join;
+	Button btnCreate;
+	EditText houseName;
+	EditText newPass;
+	EditText confirmPass;
+	TextView join;
 	private TextView loginErrorMsg;
 
 	/**
@@ -124,8 +124,7 @@ public class HouseMenu extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class NetCheck extends AsyncTask {
+	private class NetCheck extends AsyncTask<String,String,Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -139,7 +138,7 @@ public class HouseMenu extends Activity {
 			nDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected Boolean doInBackground(String... args) {
 
 			/**
@@ -153,7 +152,7 @@ public class HouseMenu extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(300); // timeout 5 mins
+					urlc.setConnectTimeout(3000); // timeout 5 mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -169,7 +168,7 @@ public class HouseMenu extends Activity {
 			return false;
 		}
 
-		@SuppressWarnings({ "unused", "unchecked" })
+		@Override
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -179,19 +178,12 @@ public class HouseMenu extends Activity {
 				loginErrorMsg.setText("Error in Network Connection");
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
-	@SuppressWarnings("rawtypes")
-	private class ProcessJoin extends AsyncTask {
+	private class ProcessJoin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String house, password;
 
@@ -212,14 +204,14 @@ public class HouseMenu extends Activity {
 			pDialog.show();
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.createHouse(house, password);
 			return json;
 		}
 
-		@SuppressWarnings("unused")
+		@Override
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -255,22 +247,15 @@ public class HouseMenu extends Activity {
 						finish();
 					} else {
 						pDialog.dismiss();
-						loginErrorMsg.setText("Incorrect housecode/password");
-					}
+						loginErrorMsg.setText("Error occured in creating house");
+					} 
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

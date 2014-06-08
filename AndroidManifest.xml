@@ -61,6 +61,10 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.example.roomieturn.JoinHouse"
+            android:label="@string/title_activity_join_house" >
+        </activity>
     </application>
 
 </manifest>

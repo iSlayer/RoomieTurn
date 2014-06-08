@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -26,7 +25,8 @@ public class JSONParser {
 	public JSONParser() {
 	}
 
-	public JSONObject getJSONFromUrl(String url, List params) {
+	@SuppressWarnings("unchecked")
+	public JSONObject getJSONFromUrl(String url, @SuppressWarnings("rawtypes") List params) {
 		// Making HTTP request
 		try {
 			// defaultHttpClient

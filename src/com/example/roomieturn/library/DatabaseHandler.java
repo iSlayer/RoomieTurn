@@ -41,7 +41,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
-		// Create tables again
 		onCreate(db);
 	}
 
@@ -56,7 +55,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_USERNAME, uname); // UserName
 		values.put(KEY_UID, uid); // Email
 		values.put(KEY_CREATED_AT, created_at); // Created At
-		// Inserting Row
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection
 	}
@@ -79,7 +77,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		db.close();
-		// return user
 		return user;
 	}
 
@@ -93,7 +90,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		int rowCount = cursor.getCount();
 		db.close();
 		cursor.close();
-		// return row count
 		return rowCount;
 	}
 
@@ -102,7 +98,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * */
 	public void resetTables() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		// Delete All Rows
 		db.delete(TABLE_LOGIN, null, null);
 		db.close();
 	}

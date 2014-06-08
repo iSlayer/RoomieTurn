@@ -1,38 +1,41 @@
 package com.example.roomieturn;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.app.Activity;
-import android.content.Intent;
-import android.view.Gravity;
-import android.view.Menu;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.example.roomieturn.library.DatabaseHandler;
-import com.example.roomieturn.library.UserFunctions;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class LoginActivity extends Activity {
+import org.json.JSONException;
+import org.json.JSONObject;
 
-	// Initialize buttons and text views
-	private Button btnLogin;
-	private EditText inputEmail;
-	private EditText inputPassword;
+import com.example.roomieturn.library.DatabaseHandler;
+import com.example.roomieturn.library.UserFunctions;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class JoinHouse extends Activity {
+
+	/**
+	 * Initialize GUI interface
+	 */
+	private EditText houseCode;
+	private EditText housePass;
+	private Button btnJoin;
 	private TextView loginErrorMsg;
-	private TextView btnRegister;
-	private TextView passres;
 
 	/**
 	 * Called when the activity is first created.
@@ -44,83 +47,40 @@ public class LoginActivity extends Activity {
 	private static String KEY_CREATED_AT = "created_at";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+		setContentView(R.layout.activity_join_house);
 
-		// Initialize button & TV interface
-		inputEmail = (EditText) findViewById(R.id.email);
-		inputPassword = (EditText) findViewById(R.id.pword);
-		btnRegister = (TextView) findViewById(R.id.registerbtn);
-		btnLogin = (Button) findViewById(R.id.login);
+		/**
+		 * Initialize GUI interface
+		 */
+		houseCode = (EditText) findViewById(R.id.houseName);
+		housePass = (EditText) findViewById(R.id.housePass);
+		btnJoin = (Button) findViewById(R.id.join);
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
-		passres = (TextView) findViewById(R.id.passres);
 
 		/**
-		 * Password reset text view click event
+		 * Button click for Join
 		 */
-		passres.setOnClickListener(new View.OnClickListener() {
+		btnJoin.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						PasswordReset.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-//				finish();
-
-			}
-		});
-
-		/**
-		 * Register button click event
-		 */
-		btnRegister.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), Register.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-//				finish();
-			}
-		});
-
-		/**
-		 * Login button click event A Toast is set to alert when the Email and
-		 * Password field is empty
-		 **/
-		btnLogin.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				if ((!inputEmail.getText().toString().equals(""))
-						&& (!inputPassword.getText().toString().equals(""))) {
-					NetAsync(view);
-				} else if ((!inputEmail.getText().toString().equals(""))) {
-					showToast("Password field empty");
-				} else if ((!inputPassword.getText().toString().equals(""))) {
-					showToast("Email field empty");
+				if (!houseCode.getText().toString().equals("")
+						&& !housePass.getText().toString().equals("")) {
+					 NetAsync(view);
 				} else {
-					showToast("Email and Password fields empty");
+					showToast("One or More Fields Empty");
 				}
-			}
-		});
-		
-		/**
-		 * TESTING TO SKIP TO OTHER ACTIVITIES
-		 */
-		Button btnTest = (Button) findViewById(R.id.btn_test);
-		btnTest.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						HouseMenu.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
+
 			}
 		});
 	}
 
 	/**
-	 * showToast displays short messages to users
+	 * showToast displays error messages to user
+	 * 
+	 * @param msg
 	 */
 	private void showToast(String msg) {
 		Toast toast = Toast.makeText(getApplicationContext(), msg,
@@ -132,13 +92,14 @@ public class LoginActivity extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
+	@SuppressWarnings("rawtypes")
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			nDialog = new ProgressDialog(LoginActivity.this);
+			nDialog = new ProgressDialog(JoinHouse.this);
 			nDialog.setTitle("Checking Network");
 			nDialog.setMessage("Loading..");
 			nDialog.setIndeterminate(false);
@@ -146,6 +107,7 @@ public class LoginActivity extends Activity {
 			nDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected Boolean doInBackground(String... args) {
 
 			/**
@@ -159,8 +121,7 @@ public class LoginActivity extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(300); // time in seconds currently 5
-													// mins
+					urlc.setConnectTimeout(300); // timeout 5 mins
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -176,10 +137,11 @@ public class LoginActivity extends Activity {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "unused" })
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
-				new ProcessLogin().execute();
+				new ProcessJoin().execute();
 			} else {
 				nDialog.dismiss();
 				loginErrorMsg.setText("Error in Network Connection");
@@ -196,20 +158,21 @@ public class LoginActivity extends Activity {
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
-	private class ProcessLogin extends AsyncTask {
+	@SuppressWarnings("rawtypes")
+	private class ProcessJoin extends AsyncTask {
 		private ProgressDialog pDialog;
-		String email, password;
+		String house, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			
 			// Get user input data
-			email = inputEmail.getText().toString();
-			password = inputPassword.getText().toString();
+			house = houseCode.getText().toString();
+			password = housePass.getText().toString();
 			
 			// Display dialog
-			pDialog = new ProgressDialog(LoginActivity.this);
+			pDialog = new ProgressDialog(JoinHouse.this);
 			pDialog.setTitle("Contacting Servers");
 			pDialog.setMessage("Logging in ...");
 			pDialog.setIndeterminate(false);
@@ -217,12 +180,14 @@ public class LoginActivity extends Activity {
 			pDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.loginUser(email, password);
+			JSONObject json = userFunction.joinHouse(house, password);
 			return json;
 		}
 
+		@SuppressWarnings("unused")
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -258,7 +223,7 @@ public class LoginActivity extends Activity {
 						finish();
 					} else {
 						pDialog.dismiss();
-						loginErrorMsg.setText("Incorrect username/password");
+						loginErrorMsg.setText("Incorrect housecode/password");
 					}
 				}
 			} catch (JSONException e) {
@@ -281,7 +246,8 @@ public class LoginActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.join_house, menu);
 		return true;
 	}
+
 }

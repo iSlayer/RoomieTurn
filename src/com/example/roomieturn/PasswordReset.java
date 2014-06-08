@@ -85,7 +85,7 @@ public class PasswordReset extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000);
+					urlc.setConnectTimeout(300);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -125,7 +125,11 @@ public class PasswordReset extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			
+			// Get user input strings
 			forgotpassword = email.getText().toString();
+			
+			// Display dialog to user
 			pDialog = new ProgressDialog(PasswordReset.this);
 			pDialog.setTitle("Contacting Servers");
 			pDialog.setMessage("Getting Data ...");

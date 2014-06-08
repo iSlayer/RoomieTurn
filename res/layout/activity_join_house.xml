@@ -6,33 +6,34 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView_create_house"
+        android:id="@+id/textView_dud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="@string/create_house_string"
+        android:text="@string/join_house_string"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/editText_house_name"
+        android:id="@+id/houseName"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/item_vert_margin"
         android:layout_marginLeft="@dimen/item_horz_margin"
         android:layout_marginRight="@dimen/item_horz_margin"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/edittext_rounded"
         android:ems="10"
-        android:hint="@string/house_name_string"
+        android:hint="@string/house_code_string"
+        android:inputType="textEmailAddress"
         android:padding="10dip"
         android:textColor="#000000"
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/new_house_pass"
+        android:id="@+id/housePass"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/item_vert_margin"
@@ -41,28 +42,14 @@
         android:layout_marginTop="@dimen/item_vert_margin"
         android:background="@drawable/edittext_rounded"
         android:ems="10"
-        android:hint="@string/new_pass_string"
-        android:padding="10dip"
-        android:textColor="#000000"
-        android:textSize="15sp" />
-
-    <EditText
-        android:id="@+id/confirm_house_pass"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="@dimen/item_vert_margin"
-        android:layout_marginLeft="@dimen/item_horz_margin"
-        android:layout_marginRight="@dimen/item_horz_margin"
-        android:layout_marginTop="@dimen/item_vert_margin"
-        android:background="@drawable/edittext_rounded"
-        android:ems="10"
-        android:hint="@string/confirm_pass_string"
+        android:hint="@string/house_pass_string"
+        android:inputType="textPassword"
         android:padding="10dip"
         android:textColor="#000000"
         android:textSize="15sp" />
 
     <Button
-        android:id="@+id/button_create_house"
+        android:id="@+id/join"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/item_vert_margin"
@@ -70,25 +57,9 @@
         android:layout_marginRight="@dimen/item_horz_margin"
         android:layout_marginTop="@dimen/item_vert_margin"
         android:background="@drawable/selector_login"
-        android:text="@string/create_string"
+        android:text="@string/join_string"
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/textView_join_house"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/item_vert_margin"
-        android:layout_marginLeft="@dimen/item_horz_margin"
-        android:layout_marginRight="@dimen/item_horz_margin"
-        android:layout_marginTop="@dimen/item_vert_margin"
-        android:background="@drawable/selector_forgot_pass"
-        android:clickable="true"
-        android:text="@string/join_house_string"
-        android:textColor="#000000"
-        android:textSize="15sp"
-        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/loginErrorMsg"

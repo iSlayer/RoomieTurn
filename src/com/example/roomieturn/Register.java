@@ -61,17 +61,6 @@ public class Register extends Activity {
 		registerErrorMsg = (TextView) findViewById(R.id.register_error);
 
 		/**
-		 * Button which Switches back to the login screen on clicked
-		 * 
-		 * Button login = (Button) findViewById(R.id.bktologin);
-		 * login.setOnClickListener(new View.OnClickListener() { public void
-		 * onClick(View view) { Intent myIntent = new Intent(view.getContext(),
-		 * LoginActivity.class);
-		 * myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		 * startActivityForResult(myIntent, 0); finish(); } });
-		 */
-
-		/**
 		 * Register Button click event. A Toast is set to alert when the fields
 		 * are empty. Another toast is set to alert User-name must be 5
 		 * characters.
@@ -125,7 +114,7 @@ public class Register extends Activity {
 
 		protected Boolean doInBackground(String... args) {
 			/**
-			 * Gets current device state and checks for working internet
+			 * Gets current device state and checks for working Internet
 			 * connection by trying Google.
 			 **/
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -173,16 +162,18 @@ public class Register extends Activity {
 		 * Defining Process dialog
 		 **/
 		private ProgressDialog pDialog;
-		String email, password, uname;
+		String uname, email, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			inputUsername = (EditText) findViewById(R.id.uname);
-			inputPassword = (EditText) findViewById(R.id.pword);
-			email = inputEmail.getText().toString();
+
+			// Get user input strings
 			uname = inputUsername.getText().toString();
+			email = inputEmail.getText().toString();
 			password = inputPassword.getText().toString();
+
+			// Insure server is registering
 			pDialog = new ProgressDialog(Register.this);
 			pDialog.setTitle("Contacting Servers");
 			pDialog.setMessage("Registering ...");
@@ -203,16 +194,20 @@ public class Register extends Activity {
 			 **/
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
+					
 					registerErrorMsg.setText("");
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
+					
 					if (Integer.parseInt(res) == 1) {
+						
 						pDialog.setTitle("Getting Data");
 						pDialog.setMessage("Loading Info");
 						registerErrorMsg.setText("Successfully Registered");
 						DatabaseHandler db = new DatabaseHandler(
 								getApplicationContext());
 						JSONObject json_user = json.getJSONObject("user");
+
 						/**
 						 * Removes all the previous data in the SQlite database
 						 **/
@@ -222,12 +217,14 @@ public class Register extends Activity {
 								json_user.getString(KEY_USERNAME),
 								json_user.getString(KEY_UID),
 								json_user.getString(KEY_CREATED_AT));
+
 						/**
 						 * Stores registered data in SQlite Database Launch
 						 * Registered screen
 						 **/
 						Intent registered = new Intent(getApplicationContext(),
 								LoginActivity.class);
+						
 						/**
 						 * Close all views before launching Registered screen
 						 **/

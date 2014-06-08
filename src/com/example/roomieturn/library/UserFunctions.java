@@ -2,7 +2,6 @@ package com.example.roomieturn.library;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import android.content.Context;
@@ -14,10 +13,14 @@ public class UserFunctions {
 	private static String registerURL = "http://10.0.2.2/learn2crack_login_api/";
 	private static String forpassURL = "http://10.0.2.2/learn2crack_login_api/";
 	private static String chgpassURL = "http://10.0.2.2/learn2crack_login_api/";
+	private static String createhouseURL = "http://10.0.2.2/learn2crack_login_api/";
+	private static String joinhouseURL = "http://10.0.2.2/learn2crack_login_api/";
 	private static String login_tag = "login";
 	private static String register_tag = "register";
 	private static String forpass_tag = "forpass";
 	private static String chgpass_tag = "chgpass";
+	private static String createHouse_tag = "createHouse";
+	private static String joinHouse_tag = "joinHouse";
 
 	// constructor
 	public UserFunctions() {
@@ -39,6 +42,7 @@ public class UserFunctions {
 
 	/**
 	 * Function to change password
+	 * TODO: Update 
 	 **/
 	public JSONObject chgPass(String newpas, String email) {
 		List params = new ArrayList();
@@ -71,6 +75,32 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("uname", uname));
 		params.add(new BasicNameValuePair("password", password));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
+
+	/**
+	 * Function to Create House
+	 **/
+	public JSONObject createHouse(String house, String password) {
+		// Building Parameters
+		List params = new ArrayList();
+		params.add(new BasicNameValuePair("tag", createHouse_tag));
+		params.add(new BasicNameValuePair("house", house));
+		params.add(new BasicNameValuePair("password", password));
+		JSONObject json = jsonParser.getJSONFromUrl(createhouseURL, params);
+		return json;
+	}
+
+	/**
+	 * Function to Join House
+	 **/
+	public JSONObject joinHouse(String houseCode, String housePass) {
+		// Building Parameters
+		List params = new ArrayList();
+		params.add(new BasicNameValuePair("tag", joinHouse_tag));
+		params.add(new BasicNameValuePair("house", houseCode));
+		params.add(new BasicNameValuePair("password", housePass));
+		JSONObject json = jsonParser.getJSONFromUrl(joinhouseURL, params);
 		return json;
 	}
 

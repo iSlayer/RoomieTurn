@@ -9,12 +9,12 @@ import android.content.Context;
 public class UserFunctions {
 	private JSONParser jsonParser;
 	// URL of the PHP API
-	private static String loginURL = "http://10.0.2.2/learn2crack_login_api/";
-	private static String registerURL = "http://10.0.2.2/learn2crack_login_api/";
-	private static String forpassURL = "http://10.0.2.2/learn2crack_login_api/";
-	private static String chgpassURL = "http://10.0.2.2/learn2crack_login_api/";
-	private static String createhouseURL = "http://10.0.2.2/learn2crack_login_api/";
-	private static String joinhouseURL = "http://10.0.2.2/learn2crack_login_api/";
+	private static String loginURL = "http://muraltemp.com/";
+	private static String registerURL = "http://muraltemp.com/";
+	private static String forpassURL = "http://muraltemp.com/";
+	private static String chgpassURL = "http://muraltemp.com/";
+	private static String createhouseURL = "http://muraltemp.com/";
+	private static String joinhouseURL = "http://muraltemp.com/";
 	private static String login_tag = "login";
 	private static String register_tag = "register";
 	private static String forpass_tag = "forpass";
@@ -42,7 +42,6 @@ public class UserFunctions {
 
 	/**
 	 * Function to change password
-	 * TODO: Update 
 	 **/
 	public JSONObject chgPass(String newpas, String email) {
 		List params = new ArrayList();

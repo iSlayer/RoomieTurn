@@ -9,11 +9,8 @@ import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	// All Static variables
-	// Database Version
 	private static final int DATABASE_VERSION = 1;
-	// Database Name
-	private static final String DATABASE_NAME = "learn2crack_login";
-	// Login table name
+	private static final String DATABASE_NAME = "RoomieTurn_login";
 	private static final String TABLE_LOGIN = "login";
 	// Login Table Columns names
 	private static final String KEY_ID = "id";

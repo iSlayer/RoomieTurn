@@ -8,10 +8,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.roomieturn.library.UserFunctions;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,28 +36,31 @@ public class PasswordReset extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
 		
-//		Button login = (Button) findViewById(R.id.bktolog);
 		email = (EditText) findViewById(R.id.forpas);
 		alert = (TextView) findViewById(R.id.alert);
 		resetpass = (Button) findViewById(R.id.respass);
-		
-//		login.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View view) {
-//				Intent myIntent = new Intent(view.getContext(),
-//						LoginActivity.class);
-//				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//				startActivityForResult(myIntent, 0);
-//				finish();
-//			}
-//		});
 
 		resetpass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				NetAsync(view);
-				//TODO: Add functionality to go back to login screen
+				if (!email.getText().toString().equals("")){
+					NetAsync(view);
+				} else {
+					showToast("Email Field is Empty");
+				}
 			}
 		});
+	}
+
+	/**
+	 * showToast will display user input errors
+	 * @param msg
+	 */
+	private void showToast(String msg) {
+		Toast toast = Toast.makeText(getApplicationContext(), msg,
+				Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 0);
+		toast.show();
 	}
 
 	private class NetCheck extends AsyncTask {

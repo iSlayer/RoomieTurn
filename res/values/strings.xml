@@ -9,27 +9,32 @@
     <string name="title_activity_house_menu">HouseMenu</string>
     <string name="title_activity_new_chore">NewChore</string>
     <string name="title_activity_recent_tasks">RecentTasks</string>
+    
     <string name="login_string">Login</string>
     <string name="register_string">Register</string>
-    <string name="forgot_password_string">Forgot Password</string>
-    <string name="password_string">Password</string>
     <string name="email_string">E-mail</string>
-    <string name="hello_world">Hello World</string>
     <string name="create_acct_string">Create Account</string>
-    <string name="cancel_string">Cancel</string>
     <string name="username_string">User Name</string>
-    <string name="reset_string">Reset</string>
-    <string name="confirm_string">Confirm</string>
-    <string name="reset_password_string">Reset Password</string>
-    <string name="change_password_string">Change Password</string>
     <string name="enter_email_string">Enter E-mail</string>
-    <string name="roomie_turn_string">Roomie Turn</string>
+    
+    <string name="password_string">Password</string>
     <string name="new_pass_string">New Password</string>
     <string name="confirm_pass_string">Confirm Password</string>
+    <string name="old_pass_string">Old Password</string>
+    <string name="forgot_password_string">Forgot Password</string>
+    <string name="reset_password_string">Reset Password</string>
+    <string name="house_code_string">House Code</string>
+    <string name="house_pass_string">House Password</string>
+    <string name="change_password_string">Change Password</string>
+    
+    <string name="hello_world">Hello World</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="reset_string">Reset</string>
+    <string name="confirm_string">Confirm</string>
+    <string name="roomie_turn_string">Roomie Turn</string>
     <string name="create_house_string">Create House</string>
     <string name="house_name_string">House Name</string>
     <string name="create_string">Create</string>
     <string name="join_house_string">Join a Household</string>
-    <string name="usr_name_string">User Name</string>
 
 </resources>

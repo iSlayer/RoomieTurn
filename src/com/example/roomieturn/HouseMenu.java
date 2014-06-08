@@ -3,12 +3,13 @@ package com.example.roomieturn;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.text.Editable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +21,9 @@ public class HouseMenu extends Activity {
 	 * Initialize variables
 	 */
 	Button btnCreate;
-	EditText house;
+	EditText houseName;
+	EditText newPass;
+	EditText confirmPass;
 	TextView join;
 
 	@Override
@@ -32,7 +35,9 @@ public class HouseMenu extends Activity {
 		 * Initialize GUI interface
 		 */
 		btnCreate = (Button) findViewById(R.id.button_create_house);
-		house = (EditText) findViewById(R.id.editText_house_name);
+		houseName = (EditText) findViewById(R.id.editText_house_name);
+		newPass = (EditText) findViewById(R.id.new_house_pass);
+		confirmPass = (EditText) findViewById(R.id.confirm_house_pass);
 		join = (TextView) findViewById(R.id.textView_join_house);
 
 		/**
@@ -44,14 +49,23 @@ public class HouseMenu extends Activity {
 			public void onClick(View view) {
 				// TODO Generate house and make usr the admin
 				// taking him to the recent tasks screen
-				if (!house.getText().toString().equals("")) {
-					if (house.getText().toString().length() > 3) {
+				if (!houseName.getText().toString().equals("")
+						&& !newPass.getText().toString().equals("")
+						&& newPass.getText().toString()
+								.equals(confirmPass.getText().toString())) {
+					if (houseName.getText().toString().length() >= 3) {
 						// NetAsync(view);
 					} else {
-						showToast("Username should be minimum 4 characters");
+						showToast("House name should be minimum 3 characters");
 					}
 				} else {
-					showToast("House Name is empty");
+					if (houseName.getText().toString().equals("")) {
+						showToast("House Name is Empty");
+					} else if (newPass.getText().toString().equals("")) {
+						showToast("Password Field is Empty");
+					} else {
+						showToast("Passwords Do Not Match");
+					}
 				}
 
 			}
@@ -64,9 +78,8 @@ public class HouseMenu extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Generate popup screen
-				showSimplePopUp();
-
+				// TODO Generate pop-up screen
+				showDialog();
 			}
 		});
 
@@ -79,50 +92,51 @@ public class HouseMenu extends Activity {
 		toast.show();
 	}
 
-	private void showSimplePopUp() {
+	private void showDialog() {
 
-		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-		helpBuilder.setTitle("Join House");
-		final EditText input = new EditText(this);
-		input.setSingleLine();
-		input.setHint("House Admin E-mail");
-		helpBuilder.setView(input);
-		helpBuilder.setPositiveButton("Send",
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final View layout = inflater.inflate(R.layout.dialog_join_house,
+				(ViewGroup) findViewById(R.id.root));
+		final EditText houseCode = (EditText) layout
+				.findViewById(R.id.houseName);
+		final EditText housePass = (EditText) layout
+				.findViewById(R.id.housePass);
+		final TextView error = (TextView) layout
+				.findViewById(R.id.TextView_PwdProblem);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Join House");
+		builder.setView(layout);
+
+		builder.setPositiveButton("Send",
 				new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO: Create intent to send email
-						String adminEmail = input.getText().toString();
-						if (!adminEmail.equals("")) {
-							sendEmail(adminEmail);
+
+						if (!houseCode.getText().toString().equals("")
+								&& !housePass.getText().toString().equals("")) {
+							// TODO: Authenticate house code and pass
+							// get house code pass
+							Boolean correctPass = false; // returnHouseCodePass();
+							if (correctPass) {
+								// TODO: Connect user to household & create
+								// authentication tokens
+							} else {
+								error.setText("House Password Incorrect");
+							}
 						} else {
-							showToast("Please enter an email address");
+							if(houseCode.getText().toString().equals("")){
+								error.setText("Please Enter House Code");
+							}else{
+								error.setText("Please Enter House Password");
+							}
 						}
 					}
 				});
 
 		// Remember, create doesn't show the dialog
-		AlertDialog helpDialog = helpBuilder.create();
+		AlertDialog helpDialog = builder.create();
 		helpDialog.show();
-	}
-
-	private void sendEmail(String adminEmail) {
-		Intent emailIntent = new Intent(Intent.ACTION_SEND);
-		emailIntent.setType("message/rfc822");
-		emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{adminEmail});
-		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join your house");
-		emailIntent
-				.putExtra(
-						Intent.EXTRA_TEXT,
-						"Testing: User wants to join your house."
-								+ "Msg sent from android app roomieTurn. SHORTY, when you coming over?!?!");
-		try {
-			startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-		} catch (android.content.ActivityNotFoundException ex) {
-			Toast.makeText(HouseMenu.this,
-					"There are no email clients installed.", Toast.LENGTH_SHORT)
-					.show();
-		}
 	}
 
 	@Override

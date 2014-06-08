@@ -38,11 +38,10 @@ public class Register extends Activity {
 	/**
 	 * Defining layout items.
 	 **/
-	EditText inputFirstName;
-	EditText inputLastName;
 	EditText inputUsername;
 	EditText inputEmail;
 	EditText inputPassword;
+	EditText confirmPassword;
 	Button btnRegister;
 	TextView registerErrorMsg;
 
@@ -57,23 +56,20 @@ public class Register extends Activity {
 		inputUsername = (EditText) findViewById(R.id.uname);
 		inputEmail = (EditText) findViewById(R.id.email);
 		inputPassword = (EditText) findViewById(R.id.pword);
+		confirmPassword = (EditText) findViewById(R.id.confirm_pass);
 		btnRegister = (Button) findViewById(R.id.register);
 		registerErrorMsg = (TextView) findViewById(R.id.register_error);
 
 		/**
 		 * Button which Switches back to the login screen on clicked
-		 
-		Button login = (Button) findViewById(R.id.bktologin);
-		login.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						LoginActivity.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-				finish();
-			}
-		}); 
-		*/
+		 * 
+		 * Button login = (Button) findViewById(R.id.bktologin);
+		 * login.setOnClickListener(new View.OnClickListener() { public void
+		 * onClick(View view) { Intent myIntent = new Intent(view.getContext(),
+		 * LoginActivity.class);
+		 * myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		 * startActivityForResult(myIntent, 0); finish(); } });
+		 */
 
 		/**
 		 * Register Button click event. A Toast is set to alert when the fields
@@ -86,10 +82,15 @@ public class Register extends Activity {
 				if ((!inputUsername.getText().toString().equals(""))
 						&& (!inputPassword.getText().toString().equals(""))
 						&& (!inputEmail.getText().toString().equals(""))) {
-					if (inputUsername.getText().toString().length() > 4) {
-						NetAsync(view);
+					if (inputUsername.getText().toString().length() >= 3) {
+						if (inputPassword.getText().toString()
+								.equals(confirmPassword.getText().toString())) {
+							NetAsync(view);
+						} else {
+							showToast("Passwords Do Not Match");
+						}
 					} else {
-						showToast("Username should be minimum 5 characters");
+						showToast("Username should be minimum 3 characters");
 					}
 				} else {
 					showToast("One or more fields are empty");
@@ -97,10 +98,11 @@ public class Register extends Activity {
 			}
 		});
 	}
-	
-	private void showToast (String msg){
-		Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP,0,0);
+
+	private void showToast(String msg) {
+		Toast toast = Toast.makeText(getApplicationContext(), msg,
+				Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 0);
 		toast.show();
 	}
 

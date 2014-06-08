@@ -118,7 +118,6 @@ public class LoginActivity extends Activity {
 						HouseMenu.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
-				finish();
 			}
 		});
 	}

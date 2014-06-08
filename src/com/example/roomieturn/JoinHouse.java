@@ -20,7 +20,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +59,7 @@ public class JoinHouse extends Activity {
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
 
 		/**
-		 * Button click for Join
+		 * Button click for join house
 		 */
 		btnJoin.setOnClickListener(new View.OnClickListener() {
 
@@ -79,7 +78,6 @@ public class JoinHouse extends Activity {
 
 	/**
 	 * showToast displays error messages to user
-	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -241,13 +239,6 @@ public class JoinHouse extends Activity {
 	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.join_house, menu);
-		return true;
 	}
 
 }

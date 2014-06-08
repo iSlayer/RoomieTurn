@@ -21,7 +21,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +30,7 @@ import android.widget.Toast;
 public class HouseMenu extends Activity {
 
 	/**
-	 * Initialize variables
+	 * Initialize GUI interface
 	 */
 	private Button btnCreate;
 	private EditText houseName;
@@ -111,6 +110,10 @@ public class HouseMenu extends Activity {
 
 	}
 
+	/**
+	 * showToast displays short messages to users
+	 * @param msg
+	 */
 	private void showToast(String msg) {
 		Toast toast = Toast.makeText(getApplicationContext(), msg,
 				Toast.LENGTH_SHORT);
@@ -270,13 +273,6 @@ public class HouseMenu extends Activity {
 	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.house_menu, menu);
-		return true;
 	}
 
 }

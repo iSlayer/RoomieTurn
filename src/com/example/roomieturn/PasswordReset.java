@@ -27,9 +27,9 @@ public class PasswordReset extends Activity {
 
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	EditText email;
-	TextView alert;
-	Button resetpass;
+	private EditText email;
+	private TextView alert;
+	private Button resetpass;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,13 @@ public class PasswordReset extends Activity {
 			public void onClick(View view) {
 				if (!email.getText().toString().equals("")){
 					NetAsync(view);
+					
+					// Go back to Login Activity
+					Intent myIntent = new Intent(view.getContext(),
+							LoginActivity.class);
+					myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivityForResult(myIntent, 0);
+					finish();
 				} else {
 					showToast("Email Field is Empty");
 				}
@@ -63,6 +70,7 @@ public class PasswordReset extends Activity {
 		toast.show();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;
 
@@ -77,6 +85,7 @@ public class PasswordReset extends Activity {
 			nDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected Boolean doInBackground(String... args) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -101,6 +110,7 @@ public class PasswordReset extends Activity {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "unused" })
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -118,6 +128,7 @@ public class PasswordReset extends Activity {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private class ProcessRegister extends AsyncTask {
 		private ProgressDialog pDialog;
 		String forgotpassword;
@@ -138,15 +149,17 @@ public class PasswordReset extends Activity {
 			pDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.forPass(forgotpassword);
 			return json;
 		}
 
+		@SuppressWarnings("unused")
 		protected void onPostExecute(JSONObject json) {
 			/**
-			 * Checks if the Password Change Process is sucesss
+			 * Checks if the Password Change Process is success
 			 **/
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -176,6 +189,7 @@ public class PasswordReset extends Activity {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

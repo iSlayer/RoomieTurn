@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Gravity;
-import android.view.Menu;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +47,9 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		// Initialize button & TV interface
+		/**
+		 * Defining all layout items
+		 **/
 		inputEmail = (EditText) findViewById(R.id.email);
 		inputPassword = (EditText) findViewById(R.id.pword);
 		btnRegister = (TextView) findViewById(R.id.registerbtn);
@@ -68,7 +69,6 @@ public class LoginActivity extends Activity {
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
 //				finish();
-
 			}
 		});
 
@@ -121,6 +121,7 @@ public class LoginActivity extends Activity {
 
 	/**
 	 * showToast displays short messages to users
+	 * @param msg
 	 */
 	private void showToast(String msg) {
 		Toast toast = Toast.makeText(getApplicationContext(), msg,
@@ -132,6 +133,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
+	@SuppressWarnings("rawtypes")
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;
 
@@ -146,6 +148,7 @@ public class LoginActivity extends Activity {
 			nDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected Boolean doInBackground(String... args) {
 
 			/**
@@ -176,6 +179,7 @@ public class LoginActivity extends Activity {
 			return false;
 		}
 
+		@SuppressWarnings({ "unused", "unchecked" })
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -196,6 +200,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
+	@SuppressWarnings("rawtypes")
 	private class ProcessLogin extends AsyncTask {
 		private ProgressDialog pDialog;
 		String email, password;
@@ -217,12 +222,14 @@ public class LoginActivity extends Activity {
 			pDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.loginUser(email, password);
 			return json;
 		}
 
+		@SuppressWarnings("unused")
 		protected void onPostExecute(JSONObject json) {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
@@ -276,12 +283,5 @@ public class LoginActivity extends Activity {
 	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 }

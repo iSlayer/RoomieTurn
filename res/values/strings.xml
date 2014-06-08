@@ -33,7 +33,7 @@
     <string name="create_house_string">Create House</string>
     <string name="house_name_string">House Name</string>
     <string name="create_string">Create</string>
-    <string name="join_house_string">Join a Household</string>
-    <string name="join_string">Join House</string>
+    <string name="join_house_string">Join House</string>
+    <string name="join_string">Join</string>
 
 </resources>

@@ -28,37 +28,24 @@ import java.util.HashMap;
 
 public class ChangePassword extends Activity {
 
+	/**
+	 * Initialize GUI interface 
+	 */
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	EditText newpass;
-	EditText confirmpass;
-	TextView alert;
-	Button changepass;
-//	Button cancel;
-
-	/**
-	 * Called when the activity is first created.
-	 */
+	private EditText newpass;
+	private EditText confirmpass;
+	private TextView alert;
+	private Button changepass;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
 
-//		/**
-//		 * Cancel button click event
-//		 */
-//		cancel = (Button) findViewById(R.id.btcancel);
-//		cancel.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View arg0) {
-//				Intent myIntent = new Intent(getApplicationContext(),
-//						RecentTasks.class);
-//				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//				startActivity(myIntent);
-//				finish();
-//			}
-//		});
-
-		// Set of password strings and alert
+		/**
+		 * Defining all layout items
+		 **/
 		newpass = (EditText) findViewById(R.id.newpass);
 		confirmpass = (EditText) findViewById(R.id.confirmpass);
 		alert = (TextView) findViewById(R.id.alertpass);

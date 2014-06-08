@@ -38,12 +38,12 @@ public class Register extends Activity {
 	/**
 	 * Defining layout items.
 	 **/
-	EditText inputUsername;
-	EditText inputEmail;
-	EditText inputPassword;
-	EditText confirmPassword;
-	Button btnRegister;
-	TextView registerErrorMsg;
+	private EditText inputUsername;
+	private EditText inputEmail;
+	private EditText inputPassword;
+	private EditText confirmPassword;
+	private Button btnRegister;
+	private TextView registerErrorMsg;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,9 +61,7 @@ public class Register extends Activity {
 		registerErrorMsg = (TextView) findViewById(R.id.register_error);
 
 		/**
-		 * Register Button click event. A Toast is set to alert when the fields
-		 * are empty. Another toast is set to alert User-name must be 5
-		 * characters.
+		 * Register Button click event
 		 **/
 		btnRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -88,6 +86,10 @@ public class Register extends Activity {
 		});
 	}
 
+	/**
+	 * showToast displays short messages to users
+	 * @param msg
+	 */
 	private void showToast(String msg) {
 		Toast toast = Toast.makeText(getApplicationContext(), msg,
 				Toast.LENGTH_SHORT);
@@ -98,6 +100,7 @@ public class Register extends Activity {
 	/**
 	 * Async Task to check whether Internet connection is working
 	 **/
+	@SuppressWarnings("rawtypes")
 	private class NetCheck extends AsyncTask {
 		private ProgressDialog nDialog;
 
@@ -112,6 +115,7 @@ public class Register extends Activity {
 			nDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected Boolean doInBackground(String... args) {
 			/**
 			 * Gets current device state and checks for working Internet
@@ -140,6 +144,7 @@ public class Register extends Activity {
 			return false;
 		}
 
+		@SuppressWarnings({ "unused", "unchecked" })
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
@@ -157,6 +162,7 @@ public class Register extends Activity {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private class ProcessRegister extends AsyncTask {
 		/**
 		 * Defining Process dialog
@@ -182,12 +188,14 @@ public class Register extends Activity {
 			pDialog.show();
 		}
 
+		@SuppressWarnings("unused")
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
 			JSONObject json = userFunction.registerUser(email, uname, password);
 			return json;
 		}
 
+		@SuppressWarnings("unused")
 		protected void onPostExecute(JSONObject json) {
 			/**
 			 * Checks for success message.
@@ -256,6 +264,7 @@ public class Register extends Activity {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void NetAsync(View view) {
 		new NetCheck().execute();
 	}

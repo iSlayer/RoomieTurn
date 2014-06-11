@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class Register extends Activity {
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
 	private static String KEY_ERROR = "error";
+	public static final String TAG = "Register";
 
 	/**
 	 * Defining layout items.
@@ -49,6 +51,7 @@ public class Register extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		Log.d(TAG, "onCreate");
 
 		/**
 		 * Defining all layout items
@@ -66,6 +69,7 @@ public class Register extends Activity {
 		btnRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				Log.d(TAG, "btnRegister Click");
 				if ((!inputUsername.getText().toString().equals(""))
 						&& (!inputPassword.getText().toString().equals(""))
 						&& (!inputEmail.getText().toString().equals(""))) {
@@ -88,6 +92,7 @@ public class Register extends Activity {
 
 	/**
 	 * showToast displays short messages to users
+	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -100,12 +105,13 @@ public class Register extends Activity {
 	/**
 	 * Async Task to check whether Internet connection is working
 	 **/
-	private class NetCheck extends AsyncTask<String,String,Boolean> {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			Log.d(TAG, "onPreExecute");
 			nDialog = new ProgressDialog(Register.this);
 			nDialog.setMessage("Loading..");
 			nDialog.setTitle("Checking Network");
@@ -119,16 +125,19 @@ public class Register extends Activity {
 			 * Gets current device state and checks for working Internet
 			 * connection by trying Google.
 			 **/
+			Log.d(TAG, "doInBackground");
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
 			if (netInfo != null && netInfo.isConnected()) {
 				try {
+					Log.d(TAG, "trying google.com");
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
 					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
+						Log.d(TAG, "connected to google.com");
 						return true;
 					}
 				} catch (MalformedURLException e1) {
@@ -144,10 +153,13 @@ public class Register extends Activity {
 
 		@Override
 		protected void onPostExecute(Boolean th) {
+			Log.d(TAG, "onPostExecute");
 			if (th == true) {
+				Log.d(TAG, "onPostExecute true");
 				nDialog.dismiss();
 				new ProcessRegister().execute();
 			} else {
+				Log.d(TAG, "onPostExecute false");
 				nDialog.dismiss();
 				registerErrorMsg.setText("Error in Network Connection");
 			}
@@ -164,9 +176,9 @@ public class Register extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-            inputUsername = (EditText) findViewById(R.id.uname);
-            inputPassword = (EditText) findViewById(R.id.pword);
+
+			inputUsername = (EditText) findViewById(R.id.uname);
+			inputPassword = (EditText) findViewById(R.id.pword);
 
 			// Get user input strings
 			uname = inputUsername.getText().toString();
@@ -194,15 +206,18 @@ public class Register extends Activity {
 			/**
 			 * Checks for success message.
 			 **/
+			Log.d(TAG, "onPostExecute - ProcessRegister");
 			try {
-				if (json.getString(KEY_SUCCESS) != null) {
-					
+				if (json != null && json.getString(KEY_SUCCESS) != null) {
+
 					registerErrorMsg.setText("");
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
-					
+
+					Log.d(TAG, "before successfully registered if");
 					if (Integer.parseInt(res) == 1) {
-						
+						Log.d(TAG, "successful if");
+
 						pDialog.setTitle("Getting Data");
 						pDialog.setMessage("Loading Info");
 						registerErrorMsg.setText("Successfully Registered");
@@ -213,6 +228,7 @@ public class Register extends Activity {
 						/**
 						 * Removes all the previous data in the SQlite database
 						 **/
+						Log.d(TAG, "Removing previous data");
 						UserFunctions logout = new UserFunctions();
 						logout.logoutUser(getApplicationContext());
 						db.addUser(json_user.getString(KEY_EMAIL),
@@ -224,9 +240,10 @@ public class Register extends Activity {
 						 * Stores registered data in SQlite Database Launch
 						 * Registered screen
 						 **/
+						Log.d(TAG, "Intent");
 						Intent registered = new Intent(getApplicationContext(),
 								LoginActivity.class);
-						
+
 						/**
 						 * Close all views before launching Registered screen
 						 **/
@@ -234,7 +251,7 @@ public class Register extends Activity {
 						registered.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 						pDialog.dismiss();
 						startActivity(registered);
-						finish();
+						// finish();
 					} else if (Integer.parseInt(red) == 2) {
 						pDialog.dismiss();
 						registerErrorMsg.setText("User already exists");

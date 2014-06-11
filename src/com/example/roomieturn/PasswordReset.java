@@ -3,7 +3,6 @@ package com.example.roomieturn;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -45,13 +44,6 @@ public class PasswordReset extends Activity {
 			public void onClick(View view) {
 				if (!email.getText().toString().equals("")){
 					NetAsync(view);
-					
-					// Go back to Login Activity
-					Intent myIntent = new Intent(view.getContext(),
-							LoginActivity.class);
-					myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-					startActivityForResult(myIntent, 0);
-					finish();
 				} else {
 					showToast("Email Field is Empty");
 				}

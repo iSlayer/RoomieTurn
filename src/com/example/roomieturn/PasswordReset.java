@@ -105,7 +105,7 @@ public class PasswordReset extends Activity {
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
-				new ProcessRegister().execute();
+				new ProcessResetPass().execute();
 			} else {
 				nDialog.dismiss();
 				alert.setText("Error in Network Connection");
@@ -113,7 +113,7 @@ public class PasswordReset extends Activity {
 		}
 	}
 
-	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
+	private class ProcessResetPass extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
 		String forgotpassword;
 

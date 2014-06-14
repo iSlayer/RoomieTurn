@@ -32,6 +32,8 @@ public class LoginActivity extends Activity {
 	private TextView loginErrorMsg;
 	TextView btnRegister;
 	TextView passres;
+	String email;
+	String pass;
 
 	/**
 	 * Called when the activity is first created.
@@ -90,12 +92,13 @@ public class LoginActivity extends Activity {
 		 **/
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				if ((!inputEmail.getText().toString().equals(""))
-						&& (!inputPassword.getText().toString().equals(""))) {
+				email = inputEmail.getText().toString();
+				pass = inputPassword.getText().toString();
+				if ((!email.equals("")) && (!pass.equals(""))) {
 					NetAsync(view);
-				} else if ((!inputEmail.getText().toString().equals(""))) {
+				} else if ((!email.equals(""))) {
 					showToast("Password field empty");
-				} else if ((!inputPassword.getText().toString().equals(""))) {
+				} else if ((!pass.equals(""))) {
 					showToast("Email field empty");
 				} else {
 					showToast("Email and Password fields empty");
@@ -114,7 +117,7 @@ public class LoginActivity extends Activity {
 				Intent myIntent = new Intent(view.getContext(),
 						HouseMenu.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
+				startActivity(myIntent);
 			}
 		});
 	}
@@ -195,7 +198,7 @@ public class LoginActivity extends Activity {
 	 **/
 	private class ProcessLogin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-		String email, password;
+//		String email, password;
 
 		@Override
 		protected void onPreExecute() {
@@ -204,8 +207,8 @@ public class LoginActivity extends Activity {
 			// Get user input data
             inputEmail = (EditText) findViewById(R.id.email);
             inputPassword = (EditText) findViewById(R.id.pword);
-			email = inputEmail.getText().toString();
-			password = inputPassword.getText().toString();
+			//email = inputEmail.getText().toString();
+			//password = inputPassword.getText().toString();
 			
 			// Display dialog
 			pDialog = new ProgressDialog(LoginActivity.this);
@@ -219,7 +222,7 @@ public class LoginActivity extends Activity {
 		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.loginUser(email, password);
+			JSONObject json = userFunction.loginUser(email, pass); //password);
 			return json;
 		}
 
@@ -250,12 +253,11 @@ public class LoginActivity extends Activity {
 						 * launches the User Panel.
 						 **/
 						Intent upanel = new Intent(getApplicationContext(),
-								RecentTasks.class);
+								HouseMenu.class);
 						upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						upanel.putExtra("email", email);
 						pDialog.dismiss();
 						startActivity(upanel);
-
-						// Close Login Screen
 						finish();
 					} else {
 						pDialog.dismiss();

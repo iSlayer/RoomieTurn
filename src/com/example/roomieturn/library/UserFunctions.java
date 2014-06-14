@@ -84,12 +84,13 @@ public class UserFunctions {
 	/**
 	 * Function to Create House
 	 **/
-	public JSONObject createHouse(String house, String password) {
+	public JSONObject createHouse(String house, String password, String email) {
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", createHouse_tag));
 		params.add(new BasicNameValuePair("house", house));
 		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("email", email));
 		JSONObject json = jsonParser.getJSONFromUrl(createhouseURL, params);
 		return json;
 	}
@@ -97,12 +98,13 @@ public class UserFunctions {
 	/**
 	 * Function to Join House
 	 **/
-	public JSONObject joinHouse(String houseCode, String housePass) {
+	public JSONObject joinHouse(String houseCode, String housePass, String email) {
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", joinHouse_tag));
-		params.add(new BasicNameValuePair("house", houseCode));
-		params.add(new BasicNameValuePair("password", housePass));
+		params.add(new BasicNameValuePair("email", email));
+		params.add(new BasicNameValuePair("housecode", houseCode));
+		params.add(new BasicNameValuePair("housepassword", housePass));
 		JSONObject json = jsonParser.getJSONFromUrl(joinhouseURL, params);
 		return json;
 	}

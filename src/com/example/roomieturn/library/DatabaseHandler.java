@@ -5,19 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	// All Static variables
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "roomie_db";
 	private static final String TABLE_LOGIN = "login";
 	// Login Table Columns names
 	private static final String KEY_ID = "id";
 	private static final String KEY_EMAIL = "email";
 	private static final String KEY_USERNAME = "uname";
+	private static final String KEY_HOUSENAME = "house_name";
+	private static final String KEY_HOUSECODE = "house_code";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_CREATED_AT = "created_at";
+	public static final String TAG = "DatabaseHandler";
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,11 +32,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY," 
-				+ KEY_EMAIL + " TEXT UNIQUE," 
-				+ KEY_USERNAME + " TEXT," 
-				+ KEY_UID + " TEXT," 
-				+ KEY_CREATED_AT + " TEXT" + ")";
+				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
+				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
+				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
+				+ " TEXT," + KEY_CREATED_AT + " TEXT" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
 
@@ -52,9 +56,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_EMAIL, email); // Email
 		values.put(KEY_USERNAME, uname); // UserName
-		values.put(KEY_UID, uid); // Email
+		values.put(KEY_UID, uid); // User Id
+		values.putNull(KEY_HOUSENAME); // House Name
+		values.putNull(KEY_HOUSECODE); // House Code
 		values.put(KEY_CREATED_AT, created_at); // Created At
 		db.insert(TABLE_LOGIN, null, values);
+		db.close(); // Closing database connection
+	}
+
+	/**
+	 * Storing user details in database
+	 * */
+	public void addHouse(String uid, String housename, String housecode) {
+		Log.i(TAG, "uid: " + uid + " housename: " + housename + " housecode: "
+				+ housecode);
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues newValues = new ContentValues();
+		newValues.put(KEY_HOUSENAME, housename);
+		newValues.put(KEY_HOUSECODE, housecode);
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid });
 		db.close(); // Closing database connection
 	}
 
@@ -62,17 +82,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * Getting user data from database
 	 * */
 	public HashMap<String, String> getUserDetails() {
+		Log.i(TAG, "getUserDetails");
 		HashMap<String, String> user = new HashMap<String, String>();
 		String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		// Move to first row
 		cursor.moveToFirst();
+		// Log.i(TAG, "Cursor count: " + cursor.getCount());
 		if (cursor.getCount() > 0) {
 			user.put("email", cursor.getString(1));
 			user.put("uname", cursor.getString(2));
 			user.put("uid", cursor.getString(3));
-			user.put("created_at", cursor.getString(4));
+			user.put("house_name", cursor.getString(4));
+			user.put("house_code", cursor.getString(5));
+			user.put("created_at", cursor.getString(6));
 		}
 		cursor.close();
 		db.close();

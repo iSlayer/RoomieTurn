@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -31,19 +33,24 @@ public class JoinHouse extends Activity {
 	/**
 	 * Initialize GUI interface
 	 */
-	EditText houseCode;
-	EditText housePass;
-	Button btnJoin;
+	private EditText houseCode;
+	private EditText housePass;
+	private Button btnJoin;
 	private TextView loginErrorMsg;
+	String email;
+	String uid;
+	String housecode;
+	String housepassword;
 
 	/**
 	 * Called when the activity is first created.
 	 */
 	private static String KEY_SUCCESS = "success";
-	private static String KEY_UID = "uid";
-	private static String KEY_USERNAME = "uname";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
+	private static String KEY_ERROR = "error";
+	private static final String TAG = "HouseMenu";
+	private static final String KEY_UID = "uid";
+	private static final String KEY_HOUSENAME = "house_name";
+	private static final String KEY_HOUSECODE = "house_code";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +72,10 @@ public class JoinHouse extends Activity {
 
 			@Override
 			public void onClick(View view) {
-				if (!houseCode.getText().toString().equals("")
-						&& !housePass.getText().toString().equals("")) {
-					 NetAsync(view);
+				housecode = houseCode.getText().toString();
+				housepassword = housePass.getText().toString();
+				if (!housecode.equals("") && !housepassword.equals("")) {
+					NetAsync(view);
 				} else {
 					showToast("One or More Fields Empty");
 				}
@@ -78,6 +86,7 @@ public class JoinHouse extends Activity {
 
 	/**
 	 * showToast displays error messages to user
+	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -90,7 +99,7 @@ public class JoinHouse extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	private class NetCheck extends AsyncTask<String,String,Boolean> {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -151,16 +160,16 @@ public class JoinHouse extends Activity {
 	 **/
 	private class ProcessJoin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-		String house, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			// Get user input data
-			house = houseCode.getText().toString();
-			password = housePass.getText().toString();
-			
+			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+			HashMap<String, String> user = new HashMap<String, String>();
+			user = db.getUserDetails();
+			email = user.get("email");
+			uid = user.get("uid");
+
 			// Display dialog
 			pDialog = new ProgressDialog(JoinHouse.this);
 			pDialog.setTitle("Contacting Servers");
@@ -173,7 +182,8 @@ public class JoinHouse extends Activity {
 		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.joinHouse(house, password);
+			JSONObject json = userFunction.joinHouse(housecode, housepassword,
+					email);
 			return json;
 		}
 
@@ -182,38 +192,41 @@ public class JoinHouse extends Activity {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
+					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
 						pDialog.setMessage("Loading User Space");
 						pDialog.setTitle("Getting Data");
 						DatabaseHandler db = new DatabaseHandler(
 								getApplicationContext());
 						JSONObject json_user = json.getJSONObject("user");
-						
-						/**
-						 * Clear all previous data in SQlite database.
-						 **/
-						UserFunctions logout = new UserFunctions();
-						logout.logoutUser(getApplicationContext());
-						db.addUser(json_user.getString(KEY_EMAIL),
-								json_user.getString(KEY_USERNAME),
-								json_user.getString(KEY_UID),
-								json_user.getString(KEY_CREATED_AT));
-						
-						/**
-						 * If JSON array details are stored in SQlite it
-						 * launches the User Panel.
-						 **/
-						Intent upanel = new Intent(getApplicationContext(),
-								RecentTasks.class);
-						upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						pDialog.dismiss();
-						startActivity(upanel);
 
-						// Close Login Screen
+						/**
+						 * Add house to SQlite database
+						 **/
+						Log.i(TAG, "user: " + json_user);
+						db.addHouse(json_user.getString(KEY_UID),
+								json_user.getString(KEY_HOUSENAME),
+								json_user.getString(KEY_HOUSECODE));
+
+						// Go to Recent tasks activity
+						Intent myIntent = new Intent(getApplicationContext(),
+								RecentTasks.class);
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						pDialog.dismiss();
+						startActivity(myIntent);
 						finish();
+
+					} else if (Integer.parseInt(red) == 1) {
+						pDialog.dismiss();
+						loginErrorMsg.setText("Incorrect house password.");
+
+					} else if (Integer.parseInt(red) == 2) {
+						pDialog.dismiss();
+						loginErrorMsg.setText("House code does not exist.");
+
 					} else {
 						pDialog.dismiss();
-						loginErrorMsg.setText("Incorrect housecode/password");
+						loginErrorMsg.setText("Must remove old house.");
 					}
 				}
 			} catch (JSONException e) {

@@ -214,9 +214,7 @@ public class Register extends Activity {
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
 
-					Log.d(TAG, "before successfully registered if");
 					if (Integer.parseInt(res) == 1) {
-						Log.d(TAG, "successful if");
 
 						pDialog.setTitle("Getting Data");
 						pDialog.setMessage("Loading Info");
@@ -228,7 +226,6 @@ public class Register extends Activity {
 						/**
 						 * Removes all the previous data in the SQlite database
 						 **/
-						Log.d(TAG, "Removing previous data");
 						UserFunctions logout = new UserFunctions();
 						logout.logoutUser(getApplicationContext());
 						db.addUser(json_user.getString(KEY_EMAIL),

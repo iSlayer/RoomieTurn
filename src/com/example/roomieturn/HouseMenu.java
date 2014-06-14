@@ -1,10 +1,10 @@
 package com.example.roomieturn;
 
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -38,15 +39,20 @@ public class HouseMenu extends Activity {
 	EditText confirmPass;
 	TextView join;
 	private TextView loginErrorMsg;
+	String email;
+	String house_name;
+	String house_pass;
+	String uid;
+	public static final String TAG = "HouseMenu";
 
 	/**
 	 * Called when the activity is first created.
 	 */
 	private static String KEY_SUCCESS = "success";
-	private static String KEY_UID = "uid";
-	private static String KEY_USERNAME = "uname";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
+	private static String KEY_ERROR = "error";
+	private static final String KEY_UID = "uid";
+	private static final String KEY_HOUSENAME = "house_name";
+	private static final String KEY_HOUSECODE = "house_code";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +76,20 @@ public class HouseMenu extends Activity {
 
 			@Override
 			public void onClick(View view) {
-				// TODO Generate house and make usr the admin
-				// taking him to the recent tasks screen
-				if (!houseName.getText().toString().equals("")
-						&& !newPass.getText().toString().equals("")
-						&& newPass.getText().toString()
-								.equals(confirmPass.getText().toString())) {
-					if (houseName.getText().toString().length() >= 3) {
-						 NetAsync(view);
+				house_name = houseName.getText().toString();
+				house_pass = newPass.getText().toString();
+				if (!house_name.equals("") && !house_pass.equals("")
+						&& house_pass.equals(confirmPass.getText().toString())) {
+					if (house_name.length() >= 3) {
+						Log.i(TAG, "Creating House");
+						NetAsync(view);
 					} else {
 						showToast("House name should be minimum 3 characters");
 					}
 				} else {
-					if (houseName.getText().toString().equals("")) {
+					if (house_name.equals("")) {
 						showToast("House Name is Empty");
-					} else if (newPass.getText().toString().equals("")) {
+					} else if (house_pass.equals("")) {
 						showToast("Password Field is Empty");
 					} else {
 						showToast("Passwords Do Not Match");
@@ -101,10 +106,11 @@ public class HouseMenu extends Activity {
 
 			@Override
 			public void onClick(View view) {
+				Log.i(TAG, "Join House");
 				Intent myIntent = new Intent(view.getContext(), JoinHouse.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
-//				finish();
+				// finish();
 			}
 		});
 
@@ -112,6 +118,7 @@ public class HouseMenu extends Activity {
 
 	/**
 	 * showToast displays short messages to users
+	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -124,7 +131,7 @@ public class HouseMenu extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	private class NetCheck extends AsyncTask<String,String,Boolean> {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -158,10 +165,8 @@ public class HouseMenu extends Activity {
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -172,7 +177,7 @@ public class HouseMenu extends Activity {
 		protected void onPostExecute(Boolean th) {
 			if (th == true) {
 				nDialog.dismiss();
-				new ProcessJoin().execute();
+				new ProcessCreateHouse().execute();
 			} else {
 				nDialog.dismiss();
 				loginErrorMsg.setText("Error in Network Connection");
@@ -183,18 +188,19 @@ public class HouseMenu extends Activity {
 	/**
 	 * Async Task to get and send data to My SQL database through JSON response.
 	 **/
-	private class ProcessJoin extends AsyncTask<String, String, JSONObject> {
+	private class ProcessCreateHouse extends
+			AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-		String house, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			// Get user input data
-			house = houseName.getText().toString();
-			password = newPass.getText().toString();
-			
+			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+			HashMap<String, String> user = new HashMap<String, String>();
+			user = db.getUserDetails();
+			email = user.get("email");
+			uid = user.get("uid");
+
 			// Display dialog
 			pDialog = new ProgressDialog(HouseMenu.this);
 			pDialog.setTitle("Contacting Servers");
@@ -206,51 +212,54 @@ public class HouseMenu extends Activity {
 
 		@Override
 		protected JSONObject doInBackground(String... args) {
+			Log.i(TAG, "doInBackground");
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.createHouse(house, password);
+			JSONObject json = userFunction.createHouse(house_name, house_pass,
+					email);
 			return json;
 		}
 
 		@Override
 		protected void onPostExecute(JSONObject json) {
+			Log.i(TAG, "onPostExecute");
 			try {
+				Log.i(TAG, "key_success: " + json.getString(KEY_SUCCESS));
 				if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
+					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
 						pDialog.setMessage("Loading User Space");
 						pDialog.setTitle("Getting Data");
 						DatabaseHandler db = new DatabaseHandler(
 								getApplicationContext());
 						JSONObject json_user = json.getJSONObject("user");
-						
-						/**
-						 * Clear all previous data in SQlite database.
-						 **/
-						UserFunctions logout = new UserFunctions();
-						logout.logoutUser(getApplicationContext());
-						db.addUser(json_user.getString(KEY_EMAIL),
-								json_user.getString(KEY_USERNAME),
-								json_user.getString(KEY_UID),
-								json_user.getString(KEY_CREATED_AT));
-						
-						/**
-						 * If JSON array details are stored in SQlite it
-						 * launches the User Panel.
-						 **/
-						Intent upanel = new Intent(getApplicationContext(),
-								RecentTasks.class);
-						upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						pDialog.dismiss();
-						startActivity(upanel);
 
-						// Close Login Screen
+						/**
+						 * Add house to SQlite database
+						 **/
+						Log.i(TAG, "user: " + json_user);
+						db.addHouse(json_user.getString(KEY_UID),
+								json_user.getString(KEY_HOUSENAME),
+								json_user.getString(KEY_HOUSECODE));
+
+						// Go to Recent tasks activity
+						Intent myIntent = new Intent(getApplicationContext(),
+								RecentTasks.class);
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						pDialog.dismiss();
+						startActivity(myIntent);
 						finish();
+
+					} else if (Integer.parseInt(red) == 5) {
+						pDialog.dismiss();
+						loginErrorMsg.setText("SHITTT!");
 					} else {
 						pDialog.dismiss();
-						loginErrorMsg.setText("Error occured in creating house");
-					} 
+						loginErrorMsg.setText("Must remove old house!");
+					}
 				}
 			} catch (JSONException e) {
+				Log.i(TAG, "JSONException e");
 				e.printStackTrace();
 			}
 		}

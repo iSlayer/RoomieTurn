@@ -33,21 +33,21 @@ public class HouseMenu extends Activity {
 	/**
 	 * Initialize GUI interface
 	 */
-	Button btnCreate;
-	EditText houseName;
-	EditText newPass;
-	EditText confirmPass;
-	TextView join;
+	private Button btnCreate;
+	private EditText houseName;
+	private EditText newPass;
+	private EditText confirmPass;
+	private TextView join;
 	private TextView loginErrorMsg;
 	String email;
 	String house_name;
 	String house_pass;
 	String uid;
-	public static final String TAG = "HouseMenu";
 
 	/**
 	 * Called when the activity is first created.
 	 */
+	public static final String TAG = "HouseMenu";
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	private static final String KEY_UID = "uid";
@@ -95,7 +95,6 @@ public class HouseMenu extends Activity {
 						showToast("Passwords Do Not Match");
 					}
 				}
-
 			}
 		});
 

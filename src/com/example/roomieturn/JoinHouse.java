@@ -45,9 +45,9 @@ public class JoinHouse extends Activity {
 	/**
 	 * Called when the activity is first created.
 	 */
+	private static final String TAG = "HouseMenu";
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	private static final String TAG = "HouseMenu";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
@@ -133,10 +133,8 @@ public class JoinHouse extends Activity {
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

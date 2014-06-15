@@ -37,17 +37,16 @@ public class JoinHouse extends Activity {
 	private EditText housePass;
 	private Button btnJoin;
 	private TextView loginErrorMsg;
-	String email;
-	String uid;
-	String housecode;
-	String housepassword;
+	public String email;
+	public String housecode;
+	public String housepassword;
 
 	/**
 	 * Called when the activity is first created.
 	 */
-	private static final String TAG = "HouseMenu";
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
+	public static final String TAG = "HouseMenu";
+	private static final String KEY_SUCCESS = "success";
+	private static final String KEY_ERROR = "error";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
@@ -127,7 +126,7 @@ public class JoinHouse extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000); // timeout 5 mins
+					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -154,7 +153,7 @@ public class JoinHouse extends Activity {
 	}
 
 	/**
-	 * Async Task to get and send data to My SQL database through JSON response.
+	 * ProcessJoin: Get and send data to My SQL database through JSON response.
 	 **/
 	private class ProcessJoin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
@@ -162,11 +161,11 @@ public class JoinHouse extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// Load current SQLITE user data
 			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 			HashMap<String, String> user = new HashMap<String, String>();
 			user = db.getUserDetails();
 			email = user.get("email");
-			uid = user.get("uid");
 
 			// Display dialog
 			pDialog = new ProgressDialog(JoinHouse.this);

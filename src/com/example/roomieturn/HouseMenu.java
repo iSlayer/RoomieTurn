@@ -42,14 +42,13 @@ public class HouseMenu extends Activity {
 	String email;
 	String house_name;
 	String house_pass;
-	String uid;
 
 	/**
 	 * Called when the activity is first created.
 	 */
 	public static final String TAG = "HouseMenu";
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
+	private static final String KEY_SUCCESS = "success";
+	private static final String KEY_ERROR = "error";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
@@ -158,7 +157,7 @@ public class HouseMenu extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000); // timeout 5 mins
+					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
@@ -185,7 +184,8 @@ public class HouseMenu extends Activity {
 	}
 
 	/**
-	 * Async Task to get and send data to My SQL database through JSON response.
+	 * ProcessCreateHouse: Task to get and send data to My SQL database through
+	 * JSON response.
 	 **/
 	private class ProcessCreateHouse extends
 			AsyncTask<String, String, JSONObject> {
@@ -198,7 +198,6 @@ public class HouseMenu extends Activity {
 			HashMap<String, String> user = new HashMap<String, String>();
 			user = db.getUserDetails();
 			email = user.get("email");
-			uid = user.get("uid");
 
 			// Display dialog
 			pDialog = new ProgressDialog(HouseMenu.this);
@@ -226,6 +225,7 @@ public class HouseMenu extends Activity {
 				if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
+					
 					if (Integer.parseInt(res) == 1) {
 						pDialog.setMessage("Loading User Space");
 						pDialog.setTitle("Getting Data");
@@ -251,7 +251,7 @@ public class HouseMenu extends Activity {
 
 					} else if (Integer.parseInt(red) == 5) {
 						pDialog.dismiss();
-						loginErrorMsg.setText("SHITTT!");
+						loginErrorMsg.setText("SHITTT!"); // TODO: Proper response error
 					} else {
 						pDialog.dismiss();
 						loginErrorMsg.setText("Must remove old house!");

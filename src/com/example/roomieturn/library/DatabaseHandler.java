@@ -14,6 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "roomie_db";
 	private static final String TABLE_LOGIN = "login";
+	
 	// Login Table Columns names
 	private static final String KEY_ID = "id";
 	private static final String KEY_EMAIL = "email";
@@ -51,14 +52,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * Storing user details in database
 	 * */
 	public void addUser(String email, String uname, String uid,
-			String created_at) {
+			String hname, String hcode, String created_at) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(KEY_EMAIL, email); // Email
 		values.put(KEY_USERNAME, uname); // UserName
 		values.put(KEY_UID, uid); // User Id
-		values.putNull(KEY_HOUSENAME); // House Name
-		values.putNull(KEY_HOUSECODE); // House Code
+		values.put(KEY_HOUSENAME, hname); // House Name
+		values.put(KEY_HOUSECODE, hcode); // House Code
 		values.put(KEY_CREATED_AT, created_at); // Created At
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection

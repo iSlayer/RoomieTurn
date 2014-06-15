@@ -2,6 +2,8 @@ package com.example.roomieturn;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,28 +29,37 @@ import java.net.URL;
 public class LoginActivity extends Activity {
 
 	// Initialize buttons and text views
-	Button btnLogin;
-	EditText inputEmail;
-	EditText inputPassword;
+	private Button btnLogin;
+	private EditText inputEmail;
+	private EditText inputPassword;
 	private TextView loginErrorMsg;
-	TextView btnRegister;
-	TextView passres;
-	String email;
-	String pass;
+	private TextView btnRegister;
+	private TextView passres;
+	public String email;
+	public String pass;
 
 	/**
-	 * Called when the activity is first created.
+	 * Database keywords
 	 */
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_UID = "uid";
-	private static String KEY_USERNAME = "uname";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
+	public static final String TAG = "Login";
+	private static final String KEY_SUCCESS = "success";
+	private static final String KEY_UID = "uid";
+	private static final String KEY_USERNAME = "uname";
+	private static final String KEY_EMAIL = "email";
+	private static final String KEY_HOUSENAME = "house_name";
+	private static final String KEY_HOUSECODE = "house_code";
+	private static final String KEY_CREATED_AT = "created_at";
+
+	public SharedPreferences sharePref;
+	private static final String KEY_PASSWORD = "password";
+	private static final String KEY_PREF = "RoomieTurn_app";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+//		sharePref = this.getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
+		sharePref = getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 
 		/**
 		 * Defining all layout items
@@ -58,33 +70,6 @@ public class LoginActivity extends Activity {
 		btnLogin = (Button) findViewById(R.id.login);
 		loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
 		passres = (TextView) findViewById(R.id.passres);
-
-		/**
-		 * Password reset text view click event
-		 */
-		passres.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						PasswordReset.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-//				finish();
-			}
-		});
-
-		/**
-		 * Register button click event
-		 */
-		btnRegister.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), Register.class);
-				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivityForResult(myIntent, 0);
-//				finish();
-			}
-		});
 
 		/**
 		 * Login button click event A Toast is set to alert when the Email and
@@ -105,17 +90,48 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-		
+
+		/**
+		 * Register button click event
+		 */
+		btnRegister.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent myIntent = new Intent(view.getContext(), Register.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivityForResult(myIntent, 0);
+				// finish();
+			}
+		});
+
+		/**
+		 * Password reset text view click event
+		 */
+		passres.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Intent myIntent = new Intent(view.getContext(),
+						PasswordReset.class);
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivityForResult(myIntent, 0);
+				finish();
+			}
+		});
+
+		/**
+		 * If SharedPreferences auto login
+		 */
+		loadSharedPreferences();
+
 		/**
 		 * TESTING TO SKIP TO OTHER ACTIVITIES
 		 */
 		Button btnTest = (Button) findViewById(R.id.btn_test);
 		btnTest.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(),
-						HouseMenu.class);
+				Intent myIntent = new Intent(view.getContext(), HouseMenu.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivity(myIntent);
 			}
@@ -124,6 +140,7 @@ public class LoginActivity extends Activity {
 
 	/**
 	 * showToast displays short messages to users
+	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -136,7 +153,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * NetCheck Task to check whether Internet connection is working.
 	 **/
-	private class NetCheck extends AsyncTask<String,String,Boolean> {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -164,17 +181,14 @@ public class LoginActivity extends Activity {
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
-					urlc.setConnectTimeout(3000); // time in seconds currently 5
-													// mins
+					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -194,22 +208,15 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Async Task to get and send data to My SQL database through JSON response.
+	 * ProcessLogin Task to get and send data to My SQL database through JSON
+	 * response.
 	 **/
 	private class ProcessLogin extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-//		String email, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			// Get user input data
-            inputEmail = (EditText) findViewById(R.id.email);
-            inputPassword = (EditText) findViewById(R.id.pword);
-			//email = inputEmail.getText().toString();
-			//password = inputPassword.getText().toString();
-			
 			// Display dialog
 			pDialog = new ProgressDialog(LoginActivity.this);
 			pDialog.setTitle("Contacting Servers");
@@ -222,7 +229,7 @@ public class LoginActivity extends Activity {
 		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.loginUser(email, pass); //password);
+			JSONObject json = userFunction.loginUser(email, pass);
 			return json;
 		}
 
@@ -237,27 +244,44 @@ public class LoginActivity extends Activity {
 						DatabaseHandler db = new DatabaseHandler(
 								getApplicationContext());
 						JSONObject json_user = json.getJSONObject("user");
-						
+
 						/**
 						 * Clear all previous data in SQlite database.
 						 **/
 						UserFunctions logout = new UserFunctions();
 						logout.logoutUser(getApplicationContext());
+
+						/**
+						 * Store JSON data into SQLITE database
+						 **/
 						db.addUser(json_user.getString(KEY_EMAIL),
 								json_user.getString(KEY_USERNAME),
 								json_user.getString(KEY_UID),
+								json_user.getString(KEY_HOUSENAME),
+								json_user.getString(KEY_HOUSECODE),
 								json_user.getString(KEY_CREATED_AT));
-						
+
 						/**
-						 * If JSON array details are stored in SQlite it
-						 * launches the User Panel.
+						 * Store User preferences for auto login
+						 */
+						saveSharedPreferences(json_user.getString(KEY_EMAIL),
+								pass);
+
+						/**
+						 * Check if user has a house
 						 **/
-						Intent upanel = new Intent(getApplicationContext(),
-								HouseMenu.class);
-						upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						upanel.putExtra("email", email);
+						Log.i(TAG, "user: " + json_user);
+						Intent myIntent;
+						if (json_user.getString(KEY_HOUSECODE).equals("null")) {
+							myIntent = new Intent(getApplicationContext(),
+									HouseMenu.class);
+						} else {
+							myIntent = new Intent(getApplicationContext(),
+									RecentTasks.class);
+						}
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						pDialog.dismiss();
-						startActivity(upanel);
+						startActivity(myIntent);
 						finish();
 					} else {
 						pDialog.dismiss();
@@ -272,5 +296,34 @@ public class LoginActivity extends Activity {
 
 	public void NetAsync(View view) {
 		new NetCheck().execute();
+	}
+
+	private void loadSharedPreferences() {
+		Log.i(TAG, "loadSharedPreferences");
+		if (sharePref.contains(KEY_EMAIL)
+				&& sharePref.contains(KEY_PASSWORD)) {
+			Log.i(TAG, "load shared email and pass");
+			inputEmail.setText(sharePref.getString(KEY_EMAIL, ""));
+			inputPassword.setText(sharePref.getString(KEY_PASSWORD, ""));
+			this.btnLogin.performClick();
+		} else if (sharePref.contains(KEY_EMAIL)) {
+			Log.i(TAG, "load shared email");
+			inputEmail.setText(sharePref.getString(KEY_EMAIL, ""));
+		}
+	}
+
+	private void saveSharedPreferences(String usr_email, String usr_pass) {
+		Log.i(TAG, "saveSharedPreferences");
+		Editor editor = sharePref.edit();
+		editor.putString(KEY_EMAIL, usr_email);
+		editor.putString(KEY_PASSWORD, usr_pass);
+		editor.commit();
+	}
+
+	private void clearSharedPreferences() {
+		Log.i(TAG, "clearSharedPreferences");
+		Editor editor = sharePref.edit();
+		editor.clear(); // clear all stored data
+		editor.commit();
 	}
 }

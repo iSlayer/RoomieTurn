@@ -26,23 +26,31 @@ public class PasswordReset extends Activity {
 
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	EditText email;
-	TextView alert;
-	Button resetpass;
+	private EditText email;
+	public TextView alert;
+	private Button resetpass;
+	public String forgotpassword;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
-		
+
+		/**
+		 * Defining all layout items
+		 **/
 		email = (EditText) findViewById(R.id.forpas);
 		alert = (TextView) findViewById(R.id.alert);
 		resetpass = (Button) findViewById(R.id.respass);
 
+		/**
+		 * Reset Password button click
+		 **/
 		resetpass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (!email.getText().toString().equals("")){
+				forgotpassword = email.getText().toString();
+				if (!forgotpassword.equals("")) {
 					NetAsync(view);
 				} else {
 					showToast("Email Field is Empty");
@@ -53,6 +61,7 @@ public class PasswordReset extends Activity {
 
 	/**
 	 * showToast will display user input errors
+	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -62,7 +71,7 @@ public class PasswordReset extends Activity {
 		toast.show();
 	}
 
-	private class NetCheck extends AsyncTask<String,String,Boolean> {
+	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
 
 		@Override
@@ -91,10 +100,8 @@ public class PasswordReset extends Activity {
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -113,17 +120,13 @@ public class PasswordReset extends Activity {
 		}
 	}
 
-	private class ProcessResetPass extends AsyncTask<String, String, JSONObject> {
+	private class ProcessResetPass extends
+			AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-		String forgotpassword;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			// Get user input strings
-			forgotpassword = email.getText().toString();
-			
 			// Display dialog to user
 			pDialog = new ProgressDialog(PasswordReset.this);
 			pDialog.setTitle("Contacting Servers");
@@ -151,6 +154,7 @@ public class PasswordReset extends Activity {
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
+						// TODO: Do we need to update the SQLITE database with new pass?
 						pDialog.dismiss();
 						alert.setText("A recovery email is sent to you, see it for more details.");
 					} else if (Integer.parseInt(red) == 2) {

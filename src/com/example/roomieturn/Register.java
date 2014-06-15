@@ -27,7 +27,7 @@ import java.net.URL;
 public class Register extends Activity {
 
 	/**
-	 * JSON Response node names.
+	 * JSON Response keywords
 	 **/
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_UID = "uid";
@@ -40,12 +40,13 @@ public class Register extends Activity {
 	/**
 	 * Defining layout items.
 	 **/
-	EditText inputUsername;
-	EditText inputEmail;
-	EditText inputPassword;
-	EditText confirmPassword;
-	Button btnRegister;
-	TextView registerErrorMsg;
+	private EditText inputUsername;
+	private EditText inputEmail;
+	private EditText inputPassword;
+	private EditText confirmPassword;
+	private Button btnRegister;
+	private TextView registerErrorMsg;
+	public String uname, email, password;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,14 @@ public class Register extends Activity {
 			@Override
 			public void onClick(View view) {
 				Log.d(TAG, "btnRegister Click");
-				if ((!inputUsername.getText().toString().equals(""))
-						&& (!inputPassword.getText().toString().equals(""))
-						&& (!inputEmail.getText().toString().equals(""))) {
-					if (inputUsername.getText().toString().length() >= 3) {
-						if (inputPassword.getText().toString()
-								.equals(confirmPassword.getText().toString())) {
+				uname = inputUsername.getText().toString();
+				email = inputEmail.getText().toString();
+				password = inputPassword.getText().toString();
+				String confirmpass = confirmPassword.getText().toString();
+				if ((!uname.equals("")) && (!password.equals(""))
+						&& (!email.equals(""))) {
+					if (uname.length() >= 3) {
+						if (password.equals(confirmpass)) {
 							NetAsync(view);
 						} else {
 							showToast("Passwords Do Not Match");
@@ -103,7 +106,7 @@ public class Register extends Activity {
 	}
 
 	/**
-	 * Async Task to check whether Internet connection is working
+	 * Network Check to check whether Internet connection is working
 	 **/
 	private class NetCheck extends AsyncTask<String, String, Boolean> {
 		private ProgressDialog nDialog;
@@ -125,26 +128,21 @@ public class Register extends Activity {
 			 * Gets current device state and checks for working Internet
 			 * connection by trying Google.
 			 **/
-			Log.d(TAG, "doInBackground");
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
 			if (netInfo != null && netInfo.isConnected()) {
 				try {
-					Log.d(TAG, "trying google.com");
 					URL url = new URL("http://www.google.com");
 					HttpURLConnection urlc = (HttpURLConnection) url
 							.openConnection();
 					urlc.setConnectTimeout(3000);
 					urlc.connect();
 					if (urlc.getResponseCode() == 200) {
-						Log.d(TAG, "connected to google.com");
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -153,38 +151,26 @@ public class Register extends Activity {
 
 		@Override
 		protected void onPostExecute(Boolean th) {
-			Log.d(TAG, "onPostExecute");
 			if (th == true) {
-				Log.d(TAG, "onPostExecute true");
 				nDialog.dismiss();
 				new ProcessRegister().execute();
 			} else {
-				Log.d(TAG, "onPostExecute false");
 				nDialog.dismiss();
 				registerErrorMsg.setText("Error in Network Connection");
 			}
 		}
 	}
 
+	/**
+	 * ProcessRegister: Register user and update the SQLITE Database
+	 * 
+	 */
 	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
-		/**
-		 * Defining Process dialog
-		 **/
 		private ProgressDialog pDialog;
-		String uname, email, password;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-
-			inputUsername = (EditText) findViewById(R.id.uname);
-			inputPassword = (EditText) findViewById(R.id.pword);
-
-			// Get user input strings
-			uname = inputUsername.getText().toString();
-			email = inputEmail.getText().toString();
-			password = inputPassword.getText().toString();
-
 			// Insure server is registering
 			pDialog = new ProgressDialog(Register.this);
 			pDialog.setTitle("Contacting Servers");
@@ -203,19 +189,13 @@ public class Register extends Activity {
 
 		@Override
 		protected void onPostExecute(JSONObject json) {
-			/**
-			 * Checks for success message.
-			 **/
-			Log.d(TAG, "onPostExecute - ProcessRegister");
 			try {
 				if (json != null && json.getString(KEY_SUCCESS) != null) {
-
 					registerErrorMsg.setText("");
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
 
 					if (Integer.parseInt(res) == 1) {
-
 						pDialog.setTitle("Getting Data");
 						pDialog.setMessage("Loading Info");
 						registerErrorMsg.setText("Successfully Registered");
@@ -228,27 +208,23 @@ public class Register extends Activity {
 						 **/
 						UserFunctions logout = new UserFunctions();
 						logout.logoutUser(getApplicationContext());
+
+						/**
+						 * Store JSON data into SQLITE database
+						 **/
 						db.addUser(json_user.getString(KEY_EMAIL),
 								json_user.getString(KEY_USERNAME),
-								json_user.getString(KEY_UID),
+								json_user.getString(KEY_UID), null, null,
 								json_user.getString(KEY_CREATED_AT));
 
-						/**
-						 * Stores registered data in SQlite Database Launch
-						 * Registered screen
-						 **/
-						Log.d(TAG, "Intent");
+						// Create intent, back to login
 						Intent registered = new Intent(getApplicationContext(),
 								LoginActivity.class);
-
-						/**
-						 * Close all views before launching Registered screen
-						 **/
 						registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						registered.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 						pDialog.dismiss();
 						startActivity(registered);
-						// finish();
+						finish();
 					} else if (Integer.parseInt(red) == 2) {
 						pDialog.dismiss();
 						registerErrorMsg.setText("User already exists");

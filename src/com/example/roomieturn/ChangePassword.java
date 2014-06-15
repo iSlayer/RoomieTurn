@@ -28,15 +28,21 @@ import java.util.HashMap;
 public class ChangePassword extends Activity {
 
 	/**
-	 * Initialize GUI interface 
+	 * Initialize GUI interface
 	 */
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
-	EditText newpass;
-	EditText confirmpass;
-	TextView alert;
-	Button changepass;
-	
+	private EditText newpassword;
+	private EditText confirmpass;
+	private Button changepass;
+	public TextView alert;
+	public String newpass;
+
+	/**
+	 * Database keywords
+	 */
+	private static final String KEY_EMAIL = "email";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +51,7 @@ public class ChangePassword extends Activity {
 		/**
 		 * Defining all layout items
 		 **/
-		newpass = (EditText) findViewById(R.id.newpass);
+		newpassword = (EditText) findViewById(R.id.newpass);
 		confirmpass = (EditText) findViewById(R.id.confirmpass);
 		alert = (TextView) findViewById(R.id.alertpass);
 
@@ -56,13 +62,13 @@ public class ChangePassword extends Activity {
 		changepass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if ((!newpass.getText().toString().equals(""))
-						&& newpass.getText().toString()
-								.equals(confirmpass.getText().toString())) {
+				newpass = newpassword.getText().toString();
+				String confirmPass = confirmpass.getText().toString();
+				if ((!newpass.equals(""))
+						&& newpass.equals(confirmpass.getText().toString())) {
 					NetAsync(view);
 					// TODO: Add functionality to go back to RecentTasks screen
-				} else if ((!newpass.getText().toString()
-						.equals(confirmpass.getText().toString()))) {
+				} else if ((!newpass.equals(confirmPass))) {
 					showToast("Inconsistent Passwords");
 				} else {
 					showToast("Password field empty");
@@ -110,10 +116,8 @@ public class ChangePassword extends Activity {
 						return true;
 					}
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -134,16 +138,15 @@ public class ChangePassword extends Activity {
 
 	private class ProcessRegister extends AsyncTask<String, String, JSONObject> {
 		private ProgressDialog pDialog;
-		String newpas, email;
+		String email;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-			HashMap<String,String> user = new HashMap<String,String>();
+			HashMap<String, String> user = new HashMap<String, String>();
 			user = db.getUserDetails();
-			newpas = newpass.getText().toString();
-			email = user.get("email");
+			email = user.get(KEY_EMAIL);
 			pDialog = new ProgressDialog(ChangePassword.this);
 			pDialog.setTitle("Contacting Servers");
 			pDialog.setMessage("Getting Data ...");
@@ -155,7 +158,7 @@ public class ChangePassword extends Activity {
 		@Override
 		protected JSONObject doInBackground(String... args) {
 			UserFunctions userFunction = new UserFunctions();
-			JSONObject json = userFunction.chgPass(newpas, email);
+			JSONObject json = userFunction.chgPass(newpass, email);
 			Log.d("Button", "Register");
 			return json;
 		}

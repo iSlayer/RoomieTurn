@@ -19,7 +19,6 @@ public class RecentTasks extends Activity {
 
 	public static final String TAG = "RecentTasks";
 	public SharedPreferences sharePref;
-	private static final String KEY_EMAIL = "email";
 	private static final String KEY_PASSWORD = "password";
 	private static final String KEY_PREF = "RoomieTurn_app";
 	
@@ -36,10 +35,6 @@ public class RecentTasks extends Activity {
 			public void onClick(View view) {
 				Intent myIntent = new Intent(getApplicationContext(),
 						ChangePassword.class);
-
-				/**
-				 * Close all views before launching Registered screen
-				 **/
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivity(myIntent);
@@ -52,9 +47,7 @@ public class RecentTasks extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// Remove auto login preferences, then exit app
 				clearSharedPreferences();
-				
 			}
 		});
 	}

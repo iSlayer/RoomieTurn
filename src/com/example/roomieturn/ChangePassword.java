@@ -3,6 +3,9 @@ package com.example.roomieturn;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -30,6 +33,7 @@ public class ChangePassword extends Activity {
 	/**
 	 * Initialize GUI interface
 	 */
+	public static final String TAG = "ChangePass";
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	private EditText newpassword;
@@ -43,10 +47,18 @@ public class ChangePassword extends Activity {
 	 */
 	private static final String KEY_EMAIL = "email";
 
+	/**
+	 * SharedPreferences setup
+	 */
+	public SharedPreferences sharePref;
+	private static final String KEY_PASSWORD = "password";
+	private static final String KEY_PREF = "RoomieTurn_app";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
+		sharePref = getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 
 		/**
 		 * Defining all layout items
@@ -67,7 +79,6 @@ public class ChangePassword extends Activity {
 				if ((!newpass.equals(""))
 						&& newpass.equals(confirmpass.getText().toString())) {
 					NetAsync(view);
-					// TODO: Add functionality to go back to RecentTasks screen
 				} else if ((!newpass.equals(confirmPass))) {
 					showToast("Inconsistent Passwords");
 				} else {
@@ -171,11 +182,17 @@ public class ChangePassword extends Activity {
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
-						/**
-						 * Dismiss the process dialog
-						 **/
 						pDialog.dismiss();
 						alert.setText("Your Password is successfully changed.");
+						clearSharedPreferences();
+
+						// Create intent, back to login
+						Intent myIntent = new Intent(getApplicationContext(),
+								RecentTasks.class);
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+						startActivity(myIntent);
+						finish();
 					} else if (Integer.parseInt(red) == 2) {
 						pDialog.dismiss();
 						alert.setText("Invalid old Password.");
@@ -192,5 +209,12 @@ public class ChangePassword extends Activity {
 
 	public void NetAsync(View view) {
 		new NetCheck().execute();
+	}
+
+	private void clearSharedPreferences() {
+		Log.i(TAG, "clearSharedPreferences");
+		Editor editor = sharePref.edit();
+		editor.remove(KEY_PASSWORD);
+		editor.commit();
 	}
 }

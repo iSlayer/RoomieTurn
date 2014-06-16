@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -48,10 +50,17 @@ public class Register extends Activity {
 	private TextView registerErrorMsg;
 	public String uname, email, password;
 
+	/**
+	 * SharedPreferences setup
+	 */
+	public SharedPreferences sharePref;
+	private static final String KEY_PREF = "RoomieTurn_app";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		sharePref = getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 		Log.d(TAG, "onCreate");
 
 		/**
@@ -217,13 +226,18 @@ public class Register extends Activity {
 								json_user.getString(KEY_UID), null, null,
 								json_user.getString(KEY_CREATED_AT));
 
+						/**
+						 * Store User preferences for auto login
+						 */
+						saveSharedPreferences(json_user.getString(KEY_EMAIL));
+
 						// Create intent, back to login
-						Intent registered = new Intent(getApplicationContext(),
+						Intent myIntent = new Intent(getApplicationContext(),
 								LoginActivity.class);
-						registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						registered.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 						pDialog.dismiss();
-						startActivity(registered);
+						startActivity(myIntent);
 						finish();
 					} else if (Integer.parseInt(red) == 2) {
 						pDialog.dismiss();
@@ -244,5 +258,12 @@ public class Register extends Activity {
 
 	public void NetAsync(View view) {
 		new NetCheck().execute();
+	}
+
+	private void saveSharedPreferences(String usr_email) {
+		Log.i(TAG, "saveSharedPreferences");
+		Editor editor = sharePref.edit();
+		editor.putString(KEY_EMAIL, usr_email);
+		editor.commit();
 	}
 }

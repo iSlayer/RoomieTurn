@@ -28,7 +28,9 @@ import java.net.URL;
 
 public class LoginActivity extends Activity {
 
-	// Initialize buttons and text views
+	/**
+	 * Defining layout items.
+	 **/
 	private Button btnLogin;
 	private EditText inputEmail;
 	private EditText inputPassword;
@@ -50,6 +52,9 @@ public class LoginActivity extends Activity {
 	private static final String KEY_HOUSECODE = "house_code";
 	private static final String KEY_CREATED_AT = "created_at";
 
+	/**
+	 * SharedPreferences setup
+	 */
 	public SharedPreferences sharePref;
 	private static final String KEY_PASSWORD = "password";
 	private static final String KEY_PREF = "RoomieTurn_app";
@@ -58,7 +63,6 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-//		sharePref = this.getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 		sharePref = getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 
 		/**
@@ -99,7 +103,7 @@ public class LoginActivity extends Activity {
 				Intent myIntent = new Intent(view.getContext(), Register.class);
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivityForResult(myIntent, 0);
-				// finish();
+				finish();
 			}
 		});
 
@@ -140,7 +144,6 @@ public class LoginActivity extends Activity {
 
 	/**
 	 * showToast displays short messages to users
-	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -300,8 +303,7 @@ public class LoginActivity extends Activity {
 
 	private void loadSharedPreferences() {
 		Log.i(TAG, "loadSharedPreferences");
-		if (sharePref.contains(KEY_EMAIL)
-				&& sharePref.contains(KEY_PASSWORD)) {
+		if (sharePref.contains(KEY_EMAIL) && sharePref.contains(KEY_PASSWORD)) {
 			Log.i(TAG, "load shared email and pass");
 			inputEmail.setText(sharePref.getString(KEY_EMAIL, ""));
 			inputPassword.setText(sharePref.getString(KEY_PASSWORD, ""));
@@ -317,13 +319,6 @@ public class LoginActivity extends Activity {
 		Editor editor = sharePref.edit();
 		editor.putString(KEY_EMAIL, usr_email);
 		editor.putString(KEY_PASSWORD, usr_pass);
-		editor.commit();
-	}
-
-	private void clearSharedPreferences() {
-		Log.i(TAG, "clearSharedPreferences");
-		Editor editor = sharePref.edit();
-		editor.clear(); // clear all stored data
 		editor.commit();
 	}
 }

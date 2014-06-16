@@ -3,10 +3,14 @@ package com.example.roomieturn;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +28,10 @@ import java.net.URL;
 
 public class PasswordReset extends Activity {
 
+	/**
+	 * Defining layout items.
+	 **/
+	public static final String TAG = "PassReset";
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	private EditText email;
@@ -31,10 +39,18 @@ public class PasswordReset extends Activity {
 	private Button resetpass;
 	public String forgotpassword;
 
+	/**
+	 * SharedPreferences setup
+	 */
+	public SharedPreferences sharePref;
+	private static final String KEY_EMAIL = "email";
+	private static final String KEY_PREF = "RoomieTurn_app";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
+		sharePref = getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
 
 		/**
 		 * Defining all layout items
@@ -57,6 +73,11 @@ public class PasswordReset extends Activity {
 				}
 			}
 		});
+
+		/**
+		 * If SharedPreferences auto login
+		 */
+		loadSharedPreferences();
 	}
 
 	/**
@@ -154,9 +175,17 @@ public class PasswordReset extends Activity {
 					String res = json.getString(KEY_SUCCESS);
 					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
-						// TODO: Do we need to update the SQLITE database with new pass?
 						pDialog.dismiss();
 						alert.setText("A recovery email is sent to you, see it for more details.");
+						saveSharedPreferences(forgotpassword);
+						
+
+						Intent myIntent = new Intent(getApplicationContext(),
+									LoginActivity.class);
+						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						pDialog.dismiss();
+						startActivity(myIntent);
+						finish();
 					} else if (Integer.parseInt(red) == 2) {
 						pDialog.dismiss();
 						alert.setText("Your email does not exist in our database.");
@@ -173,5 +202,20 @@ public class PasswordReset extends Activity {
 
 	public void NetAsync(View view) {
 		new NetCheck().execute();
+	}
+
+	private void loadSharedPreferences() {
+		Log.i(TAG, "loadSharedPreferences");
+		if (sharePref.contains(KEY_EMAIL)) {
+			Log.i(TAG, "load shared email and pass");
+			email.setText(sharePref.getString(KEY_EMAIL, ""));
+		}
+	}
+
+	private void saveSharedPreferences(String usr_email) {
+		Log.i(TAG, "saveSharedPreferences");
+		Editor editor = sharePref.edit();
+		editor.putString(KEY_EMAIL, usr_email);
+		editor.commit();
 	}
 }

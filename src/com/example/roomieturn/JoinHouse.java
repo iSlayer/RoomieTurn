@@ -50,6 +50,7 @@ public class JoinHouse extends Activity {
 	private static final String KEY_UID = "uid";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
+	private static final String KEY_HOUSEADMIN = "house_admin";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,6 @@ public class JoinHouse extends Activity {
 
 	/**
 	 * showToast displays error messages to user
-	 * 
 	 * @param msg
 	 */
 	private void showToast(String msg) {
@@ -203,7 +203,8 @@ public class JoinHouse extends Activity {
 						Log.i(TAG, "user: " + json_user);
 						db.addHouse(json_user.getString(KEY_UID),
 								json_user.getString(KEY_HOUSENAME),
-								json_user.getString(KEY_HOUSECODE));
+								json_user.getString(KEY_HOUSECODE),
+								json_user.getString(KEY_HOUSEADMIN));
 
 						// Go to Recent tasks activity
 						Intent myIntent = new Intent(getApplicationContext(),

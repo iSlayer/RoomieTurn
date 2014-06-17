@@ -50,6 +50,7 @@ public class LoginActivity extends Activity {
 	private static final String KEY_EMAIL = "email";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
+	private static final String KEY_HOUSEADMIN = "house_admin";
 	private static final String KEY_CREATED_AT = "created_at";
 
 	/**
@@ -262,6 +263,7 @@ public class LoginActivity extends Activity {
 								json_user.getString(KEY_UID),
 								json_user.getString(KEY_HOUSENAME),
 								json_user.getString(KEY_HOUSECODE),
+								json_user.getString(KEY_HOUSEADMIN),
 								json_user.getString(KEY_CREATED_AT));
 
 						/**

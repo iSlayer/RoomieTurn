@@ -18,6 +18,7 @@ public class UserFunctions {
 	private static String chgpassURL = "http://muraltemp.com/";
 	private static String createhouseURL = "http://muraltemp.com/";
 	private static String joinhouseURL = "http://muraltemp.com/";
+	private static String removehouseURL = "http://muraltemp.com/";
 	
 	private static String login_tag = "login";
 	private static String register_tag = "register";
@@ -25,6 +26,7 @@ public class UserFunctions {
 	private static String chgpass_tag = "chgpass";
 	private static String createHouse_tag = "createHouse";
 	private static String joinHouse_tag = "joinHouse";
+	private static String removeHouse_tag = "removeHouse";
 
 	// constructor
 	public UserFunctions() {
@@ -106,6 +108,18 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("housecode", houseCode));
 		params.add(new BasicNameValuePair("housepassword", housePass));
 		JSONObject json = jsonParser.getJSONFromUrl(joinhouseURL, params);
+		return json;
+	}
+
+	/**
+	 * Function to Remove House
+	 **/
+	public JSONObject removeHouse(String houseCode) {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", removeHouse_tag));
+		params.add(new BasicNameValuePair("housecode", houseCode));
+		JSONObject json = jsonParser.getJSONFromUrl(removehouseURL, params);
 		return json;
 	}
 

@@ -11,16 +11,17 @@ import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	// All Static variables
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "roomie_db";
 	private static final String TABLE_LOGIN = "login";
-	
+
 	// Login Table Columns names
 	private static final String KEY_ID = "id";
 	private static final String KEY_EMAIL = "email";
 	private static final String KEY_USERNAME = "uname";
 	private static final String KEY_HOUSENAME = "house_name";
 	private static final String KEY_HOUSECODE = "house_code";
+	private static final String KEY_HOUSEADMIN = "house_admin";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_CREATED_AT = "created_at";
 	public static final String TAG = "DatabaseHandler";
@@ -36,7 +37,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
 				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
 				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
-				+ " TEXT," + KEY_CREATED_AT + " TEXT" + ")";
+				+ " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
+				+ " TEXT" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
 
@@ -51,8 +53,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Storing user details in database
 	 * */
-	public void addUser(String email, String uname, String uid,
-			String hname, String hcode, String created_at) {
+	public void addUser(String email, String uname, String uid, String hname,
+			String hcode, String admin, String created_at) {
+		Log.i(TAG, "email: " + email + " uname: " + uname + " uid: "
+				+ uid + " hname: " + hname + " hcode: " + hcode + " admin: "
+				+ admin + " created_at: " + created_at);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(KEY_EMAIL, email); // Email
@@ -60,21 +65,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_UID, uid); // User Id
 		values.put(KEY_HOUSENAME, hname); // House Name
 		values.put(KEY_HOUSECODE, hcode); // House Code
+		values.put(KEY_HOUSEADMIN, admin); // House Code
 		values.put(KEY_CREATED_AT, created_at); // Created At
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection
 	}
 
 	/**
-	 * Storing user details in database
+	 * Storing house details in database
 	 * */
-	public void addHouse(String uid, String housename, String housecode) {
+	public void addHouse(String uid, String housename, String housecode,
+			String houseAdmin) {
 		Log.i(TAG, "uid: " + uid + " housename: " + housename + " housecode: "
-				+ housecode);
+				+ housecode + " houseadmin: " + houseAdmin);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues newValues = new ContentValues();
 		newValues.put(KEY_HOUSENAME, housename);
 		newValues.put(KEY_HOUSECODE, housecode);
+		newValues.put(KEY_HOUSEADMIN, houseAdmin);
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid });
+		db.close(); // Closing database connection
+	}
+
+	/**
+	 * Removing house details in database
+	 * */
+	public void removeHouse(String uid, String housename, String housecode, String houseAdmin) {
+		Log.i(TAG, "housecode: " + housecode);
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues newValues = new ContentValues();
+		newValues.put(KEY_HOUSENAME, housename);
+		newValues.put(KEY_HOUSECODE, housecode);
+		newValues.put(KEY_HOUSEADMIN, houseAdmin);
 		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid });
 		db.close(); // Closing database connection
 	}
@@ -97,7 +119,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			user.put("uid", cursor.getString(3));
 			user.put("house_name", cursor.getString(4));
 			user.put("house_code", cursor.getString(5));
-			user.put("created_at", cursor.getString(6));
+			user.put("house_admin", cursor.getString(6));
+			user.put("created_at", cursor.getString(7));
 		}
 		cursor.close();
 		db.close();

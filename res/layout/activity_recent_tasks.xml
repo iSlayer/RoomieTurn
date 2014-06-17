@@ -5,16 +5,40 @@
     android:background="@drawable/greenbg"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_changePass"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="278dp"
+        android:layout_weight="0.83" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Change Password" />
+        android:layout_marginBottom="@dimen/item_vert_margin"
+        android:layout_marginLeft="@dimen/item_horz_margin"
+        android:layout_marginRight="@dimen/item_horz_margin"
+        android:layout_marginTop="@dimen/item_vert_margin"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_changePass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Password" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_removeHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout" />
+        android:layout_weight="0.83"
+        android:text="Delete House" />
 
 </LinearLayout>

@@ -14,6 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "roomie_db";
 	private static final String TABLE_LOGIN = "login";
+	private static final String TABLE_CHORES = "chores";
 
 	// Login Table Columns names
 	private static final String KEY_ID = "id";
@@ -24,6 +25,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_HOUSEADMIN = "house_admin";
 	private static final String KEY_UID = "uid";
 	private static final String KEY_CREATED_AT = "created_at";
+
+	// Chores Table Columns names, others inherited from login table
+	private static final String KEY_CHOREID = "choreid";
+	private static final String KEY_CHORENAME = "chore_name";
+	private static final String KEY_DATE = "date";
 	public static final String TAG = "DatabaseHandler";
 
 	public DatabaseHandler(Context context) {
@@ -55,9 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * */
 	public void addUser(String email, String uname, String uid, String hname,
 			String hcode, String admin, String created_at) {
-		Log.i(TAG, "email: " + email + " uname: " + uname + " uid: "
-				+ uid + " hname: " + hname + " hcode: " + hcode + " admin: "
-				+ admin + " created_at: " + created_at);
+		Log.i(TAG, "email: " + email + " uname: " + uname + " uid: " + uid
+				+ " hname: " + hname + " hcode: " + hcode + " admin: " + admin
+				+ " created_at: " + created_at);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(KEY_EMAIL, email); // Email
@@ -65,7 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_UID, uid); // User Id
 		values.put(KEY_HOUSENAME, hname); // House Name
 		values.put(KEY_HOUSECODE, hcode); // House Code
-		values.put(KEY_HOUSEADMIN, admin); // House Code
+		values.put(KEY_HOUSEADMIN, admin); // House Admin
 		values.put(KEY_CREATED_AT, created_at); // Created At
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection
@@ -90,7 +96,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Removing house details in database
 	 * */
-	public void removeHouse(String uid, String housename, String housecode, String houseAdmin) {
+	public void removeHouse(String uid, String housename, String housecode,
+			String houseAdmin) {
 		Log.i(TAG, "housecode: " + housecode);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues newValues = new ContentValues();
@@ -141,11 +148,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * Add chores to the chores table
+	 * */
+	public void addChores(String choreId, String choreName, String uid,
+			String uname, String hcode, String date) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHOREID, choreId); // Chore Id
+		values.put(KEY_CHORENAME, choreName); // Chore Name
+		values.put(KEY_UID, uid); // User Id
+		values.put(KEY_USERNAME, uname); // UserName
+		values.put(KEY_HOUSECODE, hcode); // House Code
+		values.put(KEY_DATE, date); // Created At
+		db.insert(TABLE_CHORES, null, values);
+		db.close(); // Closing database connection
+	}
+
+	/**
 	 * Re create database Delete all tables and create them again
 	 * */
 	public void resetTables() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LOGIN, null, null);
+		// TODO: Samething for chores table?
+		// db.delete(TABLE_CHORES, null, null);
 		db.close();
 	}
 }

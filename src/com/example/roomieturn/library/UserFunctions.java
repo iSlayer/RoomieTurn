@@ -19,6 +19,7 @@ public class UserFunctions {
 	private static String createhouseURL = "http://muraltemp.com/";
 	private static String joinhouseURL = "http://muraltemp.com/";
 	private static String removehouseURL = "http://muraltemp.com/";
+	private static String addchoreURL = "http://muraltemp.com/";
 	
 	private static String login_tag = "login";
 	private static String register_tag = "register";
@@ -27,6 +28,7 @@ public class UserFunctions {
 	private static String createHouse_tag = "createHouse";
 	private static String joinHouse_tag = "joinHouse";
 	private static String removeHouse_tag = "removeHouse";
+	private static String addChore_tag = "addChore";
 
 	// constructor
 	public UserFunctions() {
@@ -123,20 +125,19 @@ public class UserFunctions {
 		return json;
 	}
 	
-// TODO
-//	/**
-//	 * Function to Create Chore
-//	 **/
-//	public JSONObject createChore(String email, String uname, String password) {
-//		// Building Parameters
-//		List<NameValuePair> params = new ArrayList<NameValuePair>();
-//		params.add(new BasicNameValuePair("tag", register_tag));
-//		params.add(new BasicNameValuePair("email", email));
-//		params.add(new BasicNameValuePair("uname", uname));
-//		params.add(new BasicNameValuePair("password", password));
-//		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
-//		return json;
-//	}
+	/** TODO
+	 * Function to Create Chore
+	 **/
+	public JSONObject addChore(String email, String uname, String password) {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", addChore_tag));
+		params.add(new BasicNameValuePair("email", email));
+		params.add(new BasicNameValuePair("uname", uname));
+		params.add(new BasicNameValuePair("password", password));
+		JSONObject json = jsonParser.getJSONFromUrl(addchoreURL, params);
+		return json;
+	}
 
 	/**
 	 * Function to logout user Resets the temporary data stored in SQLite

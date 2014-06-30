@@ -42,12 +42,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
 				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
-//				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
+				// + " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
 				+ " INTEGER," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
-//				+ " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
+				// + " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
 				+ " INTEGER," + KEY_HOUSEADMIN + " INTEGER," + KEY_CREATED_AT
 				+ " TEXT" + ")";
+		
+		String CREATE_CHORE_TABLE = "CREATE TABLE " + TABLE_CHORES + "("
+				+ KEY_CHOREID + " INTEGER PRIMARY KEY," 
+				+ KEY_CHORENAME + " TEXT," 
+				+ KEY_UID + " INTEGER," 
+				+ KEY_USERNAME + " TEXT," 
+				+ KEY_HOUSECODE + " INTEGER" + ")";
+		
 		db.execSQL(CREATE_LOGIN_TABLE);
+		db.execSQL(CREATE_CHORE_TABLE);
 	}
 
 	// Upgrading database
@@ -91,7 +100,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		newValues.put(KEY_HOUSENAME, housename);
 		newValues.put(KEY_HOUSECODE, housecode);
 		newValues.put(KEY_HOUSEADMIN, houseAdmin);
-		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid.toString() });
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?",
+				new String[] { uid.toString() });
 		db.close(); // Closing database connection
 	}
 
@@ -106,7 +116,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		newValues.put(KEY_HOUSENAME, housename);
 		newValues.put(KEY_HOUSECODE, housecode);
 		newValues.put(KEY_HOUSEADMIN, houseAdmin);
-		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid.toString() });
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?",
+				new String[] { uid.toString() });
 		db.close(); // Closing database connection
 	}
 
@@ -119,9 +130,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-		// Move to first row
 		cursor.moveToFirst();
-		// Log.i(TAG, "Cursor count: " + cursor.getCount());
 		if (cursor.getCount() > 0) {
 			user.put("email", cursor.getString(1));
 			user.put("uname", cursor.getString(2));
@@ -148,23 +157,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		cursor.close();
 		return rowCount;
 	}
-// TODO
-//	/**
-//	 * Add chores to the chores table
-//	 * */
-//	public void addChores(Integer choreId, String choreName, Integer uid,
-//			String uname, Integer hcode, String date) {
-//		SQLiteDatabase db = this.getWritableDatabase();
-//		ContentValues values = new ContentValues();
-//		values.put(KEY_CHOREID, choreId); // Chore Id
-//		values.put(KEY_CHORENAME, choreName); // Chore Name
-//		values.put(KEY_UID, uid); // User Id
-//		values.put(KEY_USERNAME, uname); // UserName
-//		values.put(KEY_HOUSECODE, hcode); // House Code
-//		values.put(KEY_DATE, date); // Created At
-//		db.insert(TABLE_CHORES, null, values);
-//		db.close(); // Closing database connection
-//	}
+
+	/**
+	 * Add chores to the chores table
+	 * */
+	public void addChores(Integer choreId, String choreName, Integer uid,
+			String uname, Integer hcode, String date) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHOREID, choreId); // Chore Id
+		values.put(KEY_CHORENAME, choreName); // Chore Name
+		values.put(KEY_UID, uid); // User Id
+		values.put(KEY_USERNAME, uname); // UserName
+		values.put(KEY_HOUSECODE, hcode); // House Code
+		values.put(KEY_DATE, date); // Created At
+		db.insert(TABLE_CHORES, null, values);
+		db.close(); // Closing database connection
+	}
+
+	/**
+	 * Remove chore(s) from the chores table 
+	 * */
+	public void removeChores(Integer choreId, Integer hcode, Boolean deleteAll) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHOREID, choreId); // Chore Id
+		values.put(KEY_HOUSECODE, hcode); // House Code
+		db.insert(TABLE_CHORES, null, values);
+		db.close(); // Closing database connection
+	}
 
 	/**
 	 * Re create database Delete all tables and create them again
@@ -172,8 +193,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void resetTables() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LOGIN, null, null);
-		// TODO: Samething for chores table?
-		// db.delete(TABLE_CHORES, null, null);
+		db.delete(TABLE_CHORES, null, null);
 		db.close();
 	}
 }

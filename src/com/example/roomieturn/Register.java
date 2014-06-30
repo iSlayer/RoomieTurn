@@ -86,14 +86,14 @@ public class Register extends Activity {
 				String confirmpass = confirmPassword.getText().toString();
 				if ((!uname.equals("")) && (!password.equals(""))
 						&& (!email.equals(""))) {
-					if (uname.length() >= 3) {
+					if (uname.length() >= 3 && uname.length() <= 10) {
 						if (password.equals(confirmpass)) {
 							NetAsync(view);
 						} else {
 							showToast("Passwords Do Not Match");
 						}
 					} else {
-						showToast("Username should be minimum 3 characters");
+						showToast("Username should be between 3 and 10 characters");
 					}
 				} else {
 					showToast("One or more fields are empty");

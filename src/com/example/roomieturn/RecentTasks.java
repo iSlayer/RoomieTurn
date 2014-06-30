@@ -76,6 +76,7 @@ public class RecentTasks extends Activity {
 			@Override
 			public void onClick(View v) {
 				clearSharedPreferences();
+				clearDatabaseTables();
 			}
 		});
 
@@ -230,7 +231,6 @@ public class RecentTasks extends Activity {
 		if (Integer.parseInt(admin) == 1) {
 			new NetCheck().execute();
 		} else {
-			// TODO: Display the user who is admin?
 			showToast("User who created house has permission to delete it.");
 		}
 	}
@@ -240,6 +240,15 @@ public class RecentTasks extends Activity {
 		Editor editor = sharePref.edit();
 		editor.remove(KEY_PASSWORD);
 		editor.commit();
+	}
+	
+	public void clearDatabaseTables() {
+		UserFunctions logout = new UserFunctions();
+		logout.logoutUser(getApplicationContext());
+		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(login);
+		finish();
 	}
 
 	@Override

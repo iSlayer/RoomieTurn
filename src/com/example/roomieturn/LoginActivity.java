@@ -260,10 +260,10 @@ public class LoginActivity extends Activity {
 						 **/
 						db.addUser(json_user.getString(KEY_EMAIL),
 								json_user.getString(KEY_USERNAME),
-								json_user.getString(KEY_UID),
+								json_user.getInt(KEY_UID),
 								json_user.getString(KEY_HOUSENAME),
-								json_user.getString(KEY_HOUSECODE),
-								json_user.getString(KEY_HOUSEADMIN),
+								json_user.getInt(KEY_HOUSECODE),
+								json_user.getInt(KEY_HOUSEADMIN),
 								json_user.getString(KEY_CREATED_AT));
 
 						/**

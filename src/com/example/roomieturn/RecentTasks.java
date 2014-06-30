@@ -204,7 +204,7 @@ public class RecentTasks extends Activity {
 						/**
 						 * Store JSON data into SQLITE database
 						 **/
-						db.removeHouse(uid, null, null, null);
+						db.removeHouse(Integer.parseInt(uid), null, null, null);
 						Intent myIntent = new Intent(getApplicationContext(),
 								HouseMenu.class);
 						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

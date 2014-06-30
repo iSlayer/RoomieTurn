@@ -223,7 +223,7 @@ public class Register extends Activity {
 						 **/
 						db.addUser(json_user.getString(KEY_EMAIL),
 								json_user.getString(KEY_USERNAME),
-								json_user.getString(KEY_UID), null, null, null,
+								json_user.getInt(KEY_UID), null, null, null,
 								json_user.getString(KEY_CREATED_AT));
 
 						/**

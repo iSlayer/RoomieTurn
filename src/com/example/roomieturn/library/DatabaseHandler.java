@@ -42,8 +42,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
 				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
-				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
-				+ " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
+//				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
+				+ " INTEGER," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
+//				+ " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
+				+ " INTEGER," + KEY_HOUSEADMIN + " INTEGER," + KEY_CREATED_AT
 				+ " TEXT" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
@@ -59,8 +61,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Storing user details in database
 	 * */
-	public void addUser(String email, String uname, String uid, String hname,
-			String hcode, String admin, String created_at) {
+	public void addUser(String email, String uname, Integer uid, String hname,
+			Integer hcode, Integer admin, String created_at) {
 		Log.i(TAG, "email: " + email + " uname: " + uname + " uid: " + uid
 				+ " hname: " + hname + " hcode: " + hcode + " admin: " + admin
 				+ " created_at: " + created_at);
@@ -80,8 +82,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Storing house details in database
 	 * */
-	public void addHouse(String uid, String housename, String housecode,
-			String houseAdmin) {
+	public void addHouse(Integer uid, String housename, Integer housecode,
+			Integer houseAdmin) {
 		Log.i(TAG, "uid: " + uid + " housename: " + housename + " housecode: "
 				+ housecode + " houseadmin: " + houseAdmin);
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -89,22 +91,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		newValues.put(KEY_HOUSENAME, housename);
 		newValues.put(KEY_HOUSECODE, housecode);
 		newValues.put(KEY_HOUSEADMIN, houseAdmin);
-		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid });
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid.toString() });
 		db.close(); // Closing database connection
 	}
 
 	/**
 	 * Removing house details in database
 	 * */
-	public void removeHouse(String uid, String housename, String housecode,
-			String houseAdmin) {
+	public void removeHouse(Integer uid, String housename, Integer housecode,
+			Integer houseAdmin) {
 		Log.i(TAG, "housecode: " + housecode);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues newValues = new ContentValues();
 		newValues.put(KEY_HOUSENAME, housename);
 		newValues.put(KEY_HOUSECODE, housecode);
 		newValues.put(KEY_HOUSEADMIN, houseAdmin);
-		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid });
+		db.update(TABLE_LOGIN, newValues, KEY_UID + "=?", new String[] { uid.toString() });
 		db.close(); // Closing database connection
 	}
 
@@ -146,23 +148,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		cursor.close();
 		return rowCount;
 	}
-
-	/**
-	 * Add chores to the chores table
-	 * */
-	public void addChores(String choreId, String choreName, String uid,
-			String uname, String hcode, String date) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(KEY_CHOREID, choreId); // Chore Id
-		values.put(KEY_CHORENAME, choreName); // Chore Name
-		values.put(KEY_UID, uid); // User Id
-		values.put(KEY_USERNAME, uname); // UserName
-		values.put(KEY_HOUSECODE, hcode); // House Code
-		values.put(KEY_DATE, date); // Created At
-		db.insert(TABLE_CHORES, null, values);
-		db.close(); // Closing database connection
-	}
+// TODO
+//	/**
+//	 * Add chores to the chores table
+//	 * */
+//	public void addChores(Integer choreId, String choreName, Integer uid,
+//			String uname, Integer hcode, String date) {
+//		SQLiteDatabase db = this.getWritableDatabase();
+//		ContentValues values = new ContentValues();
+//		values.put(KEY_CHOREID, choreId); // Chore Id
+//		values.put(KEY_CHORENAME, choreName); // Chore Name
+//		values.put(KEY_UID, uid); // User Id
+//		values.put(KEY_USERNAME, uname); // UserName
+//		values.put(KEY_HOUSECODE, hcode); // House Code
+//		values.put(KEY_DATE, date); // Created At
+//		db.insert(TABLE_CHORES, null, values);
+//		db.close(); // Closing database connection
+//	}
 
 	/**
 	 * Re create database Delete all tables and create them again

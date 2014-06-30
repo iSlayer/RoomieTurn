@@ -1,4 +1,3 @@
-//shorty's comment
 package com.example.roomieturn;
 
 import android.app.Activity;

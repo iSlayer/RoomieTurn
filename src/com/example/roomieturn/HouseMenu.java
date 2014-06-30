@@ -237,10 +237,10 @@ public class HouseMenu extends Activity {
 						 * Add house to SQlite database
 						 **/
 						Log.i(TAG, "user: " + json_user);
-						db.addHouse(json_user.getInt(KEY_UID),
+						db.addHouse(json_user.getString(KEY_UID),
 								json_user.getString(KEY_HOUSENAME),
-								json_user.getInt(KEY_HOUSECODE),
-								json_user.getInt(KEY_HOUSEADMIN));
+								json_user.getString(KEY_HOUSECODE),
+								json_user.getString(KEY_HOUSEADMIN));
 
 						// Go to Recent tasks activity
 						Intent myIntent = new Intent(getApplicationContext(),
@@ -259,6 +259,7 @@ public class HouseMenu extends Activity {
 					}
 				}
 			} catch (JSONException e) {
+				Log.i(TAG, "failed");
 				Log.i(TAG, "JSONException e");
 				e.printStackTrace();
 			}

@@ -126,7 +126,7 @@ public class LoginActivity extends Activity {
 		/**
 		 * If SharedPreferences auto login
 		 */
-		loadSharedPreferences();
+//		loadSharedPreferences();
 
 		/**
 		 * TESTING TO SKIP TO OTHER ACTIVITIES
@@ -252,18 +252,20 @@ public class LoginActivity extends Activity {
 						/**
 						 * Clear all previous data in SQlite database.
 						 **/
+						Log.i(TAG, "logoutUser");
 						UserFunctions logout = new UserFunctions();
 						logout.logoutUser(getApplicationContext());
 
 						/**
 						 * Store JSON data into SQLITE database
 						 **/
+						Log.i(TAG, "user: " + json_user);
 						db.addUser(json_user.getString(KEY_EMAIL),
 								json_user.getString(KEY_USERNAME),
-								json_user.getInt(KEY_UID),
+								json_user.getString(KEY_UID),
 								json_user.getString(KEY_HOUSENAME),
-								json_user.getInt(KEY_HOUSECODE),
-								json_user.getInt(KEY_HOUSEADMIN),
+								json_user.getString(KEY_HOUSECODE),
+								json_user.getString(KEY_HOUSEADMIN),
 								json_user.getString(KEY_CREATED_AT));
 
 						/**

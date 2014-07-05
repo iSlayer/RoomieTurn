@@ -32,16 +32,15 @@ import android.widget.Toast;
 public class RecentTasks extends Activity {
 
 	// Initialize test button to change pass
-	Button changePass;
-	Button logout;
-	Button btn_delHouse;
-
+	private Button changePass;
+	private Button logout;
+	private Button btn_delHouse;
 	/**
-	 * Called when the activity is first created.
+	 * Called when the activity is first created
 	 */
 	public static final String TAG = "HouseMenu";
 	private static final String KEY_SUCCESS = "success";
-	// private static final String KEY_ERROR = "error";
+	private static final String KEY_ERROR = "error";
 	private static final String KEY_HOUSEADMIN = "house_admin";
 	private static final String KEY_HOUSECODE = "house_code";
 	private static final String KEY_UID = "uid";
@@ -197,6 +196,7 @@ public class RecentTasks extends Activity {
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
+					String red = json.getString(KEY_ERROR);
 					if (Integer.parseInt(res) == 1) {
 						pDialog.setMessage("Loading User Space");
 						pDialog.setTitle("Getting Data");
@@ -208,15 +208,21 @@ public class RecentTasks extends Activity {
 						 **/
 						Log.i(TAG, "uid: " + uid);
 						db.removeHouse(uid, null, null, null);
+						if (db.getRowCount("chores") > 0){
+							db.rmAllChores();
+						}
 						Intent myIntent = new Intent(getApplicationContext(),
 								HouseMenu.class);
 						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						pDialog.dismiss();
 						startActivity(myIntent);
 						finish();
-					} else {
+					} else if (Integer.parseInt(red) == 1) {
 						pDialog.dismiss();
 						showToast("Error in Removing House");
+					} else {
+						pDialog.dismiss();
+						showToast("Error in Removing Chores");
 					}
 				}
 			} catch (JSONException e) {
@@ -229,6 +235,7 @@ public class RecentTasks extends Activity {
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		HashMap<String, String> user = new HashMap<String, String>();
 		user = db.getUserDetails();
+		
 		String admin = user.get(KEY_HOUSEADMIN);
 		if (Integer.parseInt(admin) == 1) {
 			new NetCheck().execute();

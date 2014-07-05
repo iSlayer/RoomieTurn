@@ -49,7 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_CHORE_TABLE = "CREATE TABLE " + TABLE_CHORES + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_CHOREID + " TEXT,"
 				+ KEY_CHORENAME + " TEXT," + KEY_UID + " TEXT," + KEY_USERNAME
-				+ " TEXT," + KEY_HOUSECODE + " TEXT" + ")";
+				+ " TEXT," + KEY_HOUSECODE + " TEXT," + KEY_DATE + " TEXT" + ")";
 
 		db.execSQL(CREATE_LOGIN_TABLE);
 		db.execSQL(CREATE_CHORE_TABLE);
@@ -117,7 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Getting user data from database
+	 * Getting user data from database users table
 	 * */
 	public HashMap<String, String> getUserDetails() {
 		Log.i(TAG, "getUserDetails");
@@ -141,10 +141,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * Getting user data from database chore table
+	 * */
+	public HashMap<String, String> getChoreDetails() {
+		Log.i(TAG, "getUserDetails");
+		HashMap<String, String> chore = new HashMap<String, String>();
+		String selectQuery = "SELECT  * FROM " + TABLE_CHORES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		cursor.moveToFirst();
+		if (cursor.getCount() > 0) {
+			chore.put(KEY_CHOREID, cursor.getString(1));
+			chore.put(KEY_CHORENAME, cursor.getString(2));
+			chore.put(KEY_UID, cursor.getString(3));
+			chore.put(KEY_USERNAME, cursor.getString(4));
+			chore.put(KEY_HOUSECODE, cursor.getString(5));
+			chore.put(KEY_DATE, cursor.getString(6));
+		}
+		cursor.close();
+		db.close();
+		return chore;
+	}
+
+	/**
 	 * Getting user login status return true if rows are there in table
 	 * */
-	public int getRowCount() {
-		String countQuery = "SELECT  * FROM " + TABLE_LOGIN;
+	public int getRowCount(String table) {
+		String countQuery;
+		if (table.equals(TABLE_LOGIN)) {
+			countQuery = "SELECT  * FROM " + TABLE_LOGIN;
+		} else {
+			countQuery = "SELECT  * FROM " + TABLE_CHORES;
+		}
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		int rowCount = cursor.getCount();
@@ -170,15 +198,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close(); // Closing database connection
 	}
 
-	/**
-	 * Remove chore(s) from the chores table
+	/** 
+	 * Remove chore from the chores table
 	 * */
-	public void rmChores(String choreId, String hcode, Boolean deleteAll) {
+	public void rmChore(String choreId) {
+		Log.i(TAG, "rmChores");
 		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(KEY_CHOREID, choreId); // Chore Id
-		values.put(KEY_HOUSECODE, hcode); // House Code
-		db.insert(TABLE_CHORES, null, values);
+		db.delete(TABLE_CHORES, KEY_CHOREID + "=?", new String[] { choreId });
+		db.close(); // Closing database connection
+	}
+
+	/**
+	 * Removes all chores from the chores table
+	 * */
+	public void rmAllChores() {
+		Log.i(TAG, "rmAllChores");
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_CHORES, null, null);
 		db.close(); // Closing database connection
 	}
 

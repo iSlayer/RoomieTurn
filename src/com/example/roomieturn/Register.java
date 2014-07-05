@@ -40,7 +40,7 @@ public class Register extends Activity {
 	public static final String TAG = "Register";
 
 	/**
-	 * Defining layout items.
+	 * Defining layout items
 	 **/
 	private EditText inputUsername;
 	private EditText inputEmail;

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 public class UserFunctions {
-	
+
 	// URL of the PHP API
 	private JSONParser jsonParser;
 	private static String loginURL = "http://muraltemp.com/";
@@ -20,7 +20,9 @@ public class UserFunctions {
 	private static String joinhouseURL = "http://muraltemp.com/";
 	private static String removehouseURL = "http://muraltemp.com/";
 	private static String addchoreURL = "http://muraltemp.com/";
-	
+	private static String rmchoreURL = "http://muraltemp.com/";
+	private static String rmallchoreURL = "http://muraltemp.com/";
+
 	private static String login_tag = "login";
 	private static String register_tag = "register";
 	private static String forpass_tag = "forpass";
@@ -29,6 +31,8 @@ public class UserFunctions {
 	private static String joinHouse_tag = "joinHouse";
 	private static String removeHouse_tag = "removeHouse";
 	private static String addChore_tag = "addChore";
+	private static String rmChore_tag = "rmChore";
+	private static String rmAllChores_tag = "rmAllChores";
 
 	// constructor
 	public UserFunctions() {
@@ -124,18 +128,45 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(removehouseURL, params);
 		return json;
 	}
-	
-	/** TODO
-	 * Function to Create Chore
+
+	/**
+	 * Function to Create Chore(s) on server
 	 **/
-	public JSONObject addChore(String email, String uname, String password) {
+	public JSONObject addChore(String chore_name, String house_code,
+			String username, String uid, String date) {
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", addChore_tag));
-		params.add(new BasicNameValuePair("email", email));
-		params.add(new BasicNameValuePair("uname", uname));
-		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("chore_name", chore_name));
+		params.add(new BasicNameValuePair("house_code", house_code));
+		params.add(new BasicNameValuePair("username", username));
+		params.add(new BasicNameValuePair("uid", uid));
+		params.add(new BasicNameValuePair("date", date));
 		JSONObject json = jsonParser.getJSONFromUrl(addchoreURL, params);
+		return json;
+	}
+
+	/** 
+	 * Function to Remove Chore from server
+	 **/
+	public JSONObject rmChore(String choreid) {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", rmChore_tag));
+		params.add(new BasicNameValuePair("choreid", choreid));
+		JSONObject json = jsonParser.getJSONFromUrl(rmchoreURL, params);
+		return json;
+	}
+
+	/** 
+	 * Function to Remove Chore from server
+	 **/
+	public JSONObject rmAllChore(String house_code) {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", rmAllChores_tag));
+		params.add(new BasicNameValuePair("house_code", house_code));
+		JSONObject json = jsonParser.getJSONFromUrl(rmallchoreURL, params);
 		return json;
 	}
 

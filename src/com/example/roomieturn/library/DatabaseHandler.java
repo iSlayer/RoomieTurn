@@ -43,9 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL
 				+ " TEXT UNIQUE," + KEY_USERNAME + " TEXT," + KEY_UID
 				+ " TEXT," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
-				// + " INTEGER," + KEY_HOUSENAME + " TEXT," + KEY_HOUSECODE
 				+ " TEXT," + KEY_HOUSEADMIN + " TEXT," + KEY_CREATED_AT
-				// + " INTEGER," + KEY_HOUSEADMIN + " INTEGER," + KEY_CREATED_AT
 				+ " TEXT" + ")";
 
 		String CREATE_CHORE_TABLE = "CREATE TABLE " + TABLE_CHORES + "("
@@ -175,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Remove chore(s) from the chores table
 	 * */
-	public void removeChores(String choreId, String hcode, Boolean deleteAll) {
+	public void rmChores(String choreId, String hcode, Boolean deleteAll) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(KEY_CHOREID, choreId); // Chore Id

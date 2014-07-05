@@ -41,7 +41,7 @@ public class RecentTasks extends Activity {
 	 */
 	public static final String TAG = "HouseMenu";
 	private static final String KEY_SUCCESS = "success";
-//	private static final String KEY_ERROR = "error";
+	// private static final String KEY_ERROR = "error";
 	private static final String KEY_HOUSEADMIN = "house_admin";
 	private static final String KEY_HOUSECODE = "house_code";
 	private static final String KEY_UID = "uid";
@@ -77,6 +77,7 @@ public class RecentTasks extends Activity {
 			public void onClick(View v) {
 				clearSharedPreferences();
 				clearDatabaseTables();
+				backToLoginActivity();
 			}
 		});
 
@@ -242,13 +243,17 @@ public class RecentTasks extends Activity {
 		editor.remove(KEY_PASSWORD);
 		editor.commit();
 	}
-	
+
 	public void clearDatabaseTables() {
 		UserFunctions logout = new UserFunctions();
 		logout.logoutUser(getApplicationContext());
-		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(login);
+	}
+
+	public void backToLoginActivity() {
+		Intent LoginActivity = new Intent(getApplicationContext(),
+				LoginActivity.class);
+		LoginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(LoginActivity);
 		finish();
 	}
 

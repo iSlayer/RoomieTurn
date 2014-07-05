@@ -111,7 +111,7 @@ public class UserFunctions {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", joinHouse_tag));
 		params.add(new BasicNameValuePair("email", email));
-		params.add(new BasicNameValuePair("housecode", houseCode));
+		params.add(new BasicNameValuePair("house_code", houseCode));
 		params.add(new BasicNameValuePair("housepassword", housePass));
 		JSONObject json = jsonParser.getJSONFromUrl(joinhouseURL, params);
 		return json;
@@ -124,7 +124,7 @@ public class UserFunctions {
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", removeHouse_tag));
-		params.add(new BasicNameValuePair("housecode", houseCode));
+		params.add(new BasicNameValuePair("house_code", houseCode));
 		JSONObject json = jsonParser.getJSONFromUrl(removehouseURL, params);
 		return json;
 	}

@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	// All Static variables
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 7;
 	private static final String DATABASE_NAME = "roomie_db";
 	private static final String TABLE_LOGIN = "login";
 	private static final String TABLE_CHORES = "chores";
@@ -106,7 +106,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 * */
 	public void removeHouse(String uid, String housename, String housecode,
 			String houseAdmin) {
-		Log.i(TAG, "housecode: " + housecode);
+		Log.i(TAG, "removeHouse uid: " + uid);
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues newValues = new ContentValues();
 		newValues.put(KEY_HOUSENAME, housename);

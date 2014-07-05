@@ -193,6 +193,7 @@ public class RecentTasks extends Activity {
 
 		@Override
 		protected void onPostExecute(JSONObject json) {
+			Log.i(TAG, "onPostExecuteJSONObject");
 			try {
 				if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
@@ -206,11 +207,14 @@ public class RecentTasks extends Activity {
 						/**
 						 * Store JSON data into SQLITE database
 						 **/
-						Log.i(TAG, "uid: " + uid);
 						db.removeHouse(uid, null, null, null);
 						if (db.getRowCount("chores") > 0){
+							Log.i(TAG, "Removing Chores");
 							db.rmAllChores();
 						}
+						HashMap<String, String> user = new HashMap<String, String>();
+						user = db.getUserDetails();
+						Log.i(TAG,"User: " + user);
 						Intent myIntent = new Intent(getApplicationContext(),
 								HouseMenu.class);
 						myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

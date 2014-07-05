@@ -126,7 +126,7 @@ public class LoginActivity extends Activity {
 		/**
 		 * If SharedPreferences auto login
 		 */
-//		loadSharedPreferences();
+		loadSharedPreferences();
 
 		/**
 		 * TESTING TO SKIP TO OTHER ACTIVITIES
